@@ -1,13 +1,8 @@
-import { AuthButtonServer } from '@/components/auth-button-server'
+import LoginCard from '@/components/login/login'
 import React from 'react'
 
 const Login = () => {
-  return (
-    <section>
-      <h1>Inicia sesión en Lilnait.dev</h1>
-      <AuthButtonServer />
-    </section>
-  )
+  return <LoginCard />
 }
 
 export default Login
