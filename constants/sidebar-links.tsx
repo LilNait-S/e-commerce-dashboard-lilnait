@@ -1,5 +1,5 @@
 import {
-  AnalitycsIcon,
+  AnalyticsIcon,
   BannersIcon,
   ClientsIcon,
   EcommerceIcon,
@@ -17,7 +17,7 @@ export const sidebarLinks = [
     label: 'Overview',
   },
   {
-    icon: <AnalitycsIcon />,
+    icon: <AnalyticsIcon />,
     route: '/analytics',
     label: 'Analytics',
   },
@@ -28,7 +28,7 @@ export const sidebarLinks = [
   },
   {
     icon: <ProfileIcon />,
-    route: '/my-profile',
+    route: '/profile',
     label: 'Profile',
   },
   {

@@ -80,7 +80,7 @@ export const OverviewIcon = ({ width = '20px', height = '20px' }) => (
   </svg>
 )
 
-export const AnalitycsIcon = ({ width = '20px', height = '20px' }) => (
+export const AnalyticsIcon = ({ width = '20px', height = '20px' }) => (
   <svg
     className='icon icon-tabler icon-tabler-brand-google-analytics'
     width={width}
