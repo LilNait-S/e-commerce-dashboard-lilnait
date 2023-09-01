@@ -1,16 +1,16 @@
 import React from 'react'
-import { AuthButtonServer } from '../auth-button-server'
+import { AuthButtonServer } from './auth-button-server'
 
 const LoginCard = () => {
   return (
-    <section className='bg-zinc-900'>
+    <section className='bg-gray-950'>
       <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
-        <div className='w-full rounded-lg shadow border md:mt-0 sm:max-w-xl xl:p-0 bg-zinc-800 border-zinc-700'>
+        <div className='w-full rounded-lg shadow border md:mt-0 sm:max-w-xl xl:p-0 bg-gray-900 border-gray-800'>
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <h1 className='text-xl font-bold leading-tight tracking-tight md:text-2xl text-white'>
               Log in to Lilnait.dev
             </h1>
-            <p className='text-sm font-light text-zinc-400 '>
+            <p className='text-sm font-light text-gray-400 '>
               Don’t have an account?{' '}
               <a
                 href='#'
@@ -29,7 +29,7 @@ const LoginCard = () => {
                     Email
                   </label>
                   <input
-                    className='border sm:text-sm rounded-lg block w-full p-2.5 bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white'
+                    className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-800 border-gray-600 placeholder-gray-500 text-white'
                     placeholder='name@company.com'
                   />
                 </div>
@@ -45,16 +45,16 @@ const LoginCard = () => {
                     name='password'
                     id='password'
                     placeholder='••••••••'
-                    className='border sm:text-sm rounded-lg block w-full p-2.5 bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white'
+                    className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-800 border-gray-600 placeholder-gray-500 text-white'
                     required={true}
                   />
                 </div>
               </div>
 
               <div className='flex justify-center items-center'>
-                <div className='h-0.5 w-full bg-zinc-600' />
-                <span className='px-5'>or</span>
-                <div className='h-0.5 w-full bg-zinc-600' />
+                <div className='h-0.5 w-full bg-gray-600' />
+                <span className='px-5 text-white'>or</span>
+                <div className='h-0.5 w-full bg-gray-600' />
               </div>
 
               <AuthButtonServer />
@@ -78,7 +78,7 @@ const LoginCard = () => {
                 </div>
                 <a
                   href='#'
-                  className='text-sm font-medium text-purple-500 hover:underline dark:text-primary-500'
+                  className='text-sm font-medium text-purple-500 hover:underline'
                 >
                   Forgot password?
                 </a>
