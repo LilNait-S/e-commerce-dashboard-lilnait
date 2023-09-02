@@ -1,4 +1,3 @@
-import LayoutBar from '@/components/shared/layout-bar'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -18,16 +17,14 @@ export default async function Home() {
     .select('*, users(id, name, email, avatar_url)')
 
   return (
-    <LayoutBar>
-      <div className='max-w-3xl flex flex-col gap-4'>
-        {products?.map((product) => (
-          <div key={product.id}>
-            <span>{product.title}</span>
-            <hr />
-            <span>{product.content}</span>
-          </div>
-        ))}
-      </div>
-    </LayoutBar>
+    <div className='max-w-3xl flex flex-col gap-4'>
+      {products?.map((product) => (
+        <div key={product.id}>
+          <span>{product.title}</span>
+          <hr />
+          <span>{product.content}</span>
+        </div>
+      ))}
+    </div>
   )
 }

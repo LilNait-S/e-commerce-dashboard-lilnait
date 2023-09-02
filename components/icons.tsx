@@ -136,7 +136,7 @@ export const ProfileIcon = ({ width = '20px', height = '20px' }) => (
   </svg>
 )
 
-export const ClientsIcon = ({ width = '20px', height = '20px' }) => (
+export const CustomersIcon = ({ width = '20px', height = '20px' }) => (
   <svg
     className='icon icon-tabler icon-tabler-users'
     width={width}
@@ -232,5 +232,22 @@ export const MessagesIcon = ({ width = '20px', height = '20px' }) => (
     <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
     <path d='M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10'></path>
     <path d='M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2'></path>
+  </svg>
+)
+
+export const DotIcon = ({ width = '20px', height = '20px' }) => (
+  <svg
+    className='icon icon-tabler icon-tabler-point'
+    width={width}
+    height={height}
+    viewBox='0 0 24 24'
+    strokeWidth={1.5}
+    stroke='currentColor'
+    fill='none'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+  >
+    <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+    <path d='M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'></path>
   </svg>
 )

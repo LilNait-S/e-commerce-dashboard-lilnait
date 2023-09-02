@@ -1,7 +1,8 @@
 import {
   AnalyticsIcon,
   BannersIcon,
-  ClientsIcon,
+  CustomersIcon,
+  DotIcon,
   EcommerceIcon,
   MessagesIcon,
   OrdersIcon,
@@ -9,51 +10,95 @@ import {
   ProductsIcon,
   ProfileIcon,
 } from '@/components/icons'
+import { type LinkSidebar } from '@/components/types.d'
 
-export const sidebarLinks = [
+export const sidebarLinks: LinkSidebar[] = [
   {
-    icon: <OverviewIcon />,
-    route: '/',
-    label: 'Overview',
+    link: {
+      icon: <OverviewIcon />,
+      route: '/',
+      label: 'Overview',
+      sublinks: null,
+    },
   },
   {
-    icon: <AnalyticsIcon />,
-    route: '/analytics',
-    label: 'Analytics',
+    link: {
+      icon: <AnalyticsIcon />,
+      route: '/analytics',
+      label: 'Analytics',
+      sublinks: null,
+    },
   },
   {
-    icon: <EcommerceIcon />,
-    route: '/ecommerce',
-    label: 'E-commerce',
+    link: {
+      icon: <EcommerceIcon />,
+      route: '/ecommerce',
+      label: 'E-commerce',
+      sublinks: null,
+    },
   },
   {
-    icon: <ProfileIcon />,
-    route: '/profile',
-    label: 'Profile',
+    link: {
+      icon: <ProfileIcon />,
+      route: '/profile',
+      label: 'Profile',
+      sublinks: null,
+    },
   },
   {
-    icon: <ClientsIcon />,
-    route: '/clients',
-    label: 'Clients',
+    link: {
+      icon: <CustomersIcon />,
+      route: '/customers',
+      label: 'Customers',
+      sublinks: null,
+    },
   },
   {
-    icon: <ProductsIcon />,
-    route: '/products',
-    label: 'Products',
+    link: {
+      icon: <ProductsIcon />,
+      route: '/products',
+      label: 'Products',
+      sublinks: [
+        {
+          icon: <DotIcon />,
+          route: '/products/add-product',
+          label: 'Add Product',
+        },
+        {
+          icon: <DotIcon />,
+          route: '/products/product-list',
+          label: 'Product list',
+        },
+        {
+          icon: <DotIcon />,
+          route: '/products/category-list',
+          label: 'Category list',
+        },
+      ],
+    },
   },
   {
-    icon: <OrdersIcon />,
-    route: '/orders',
-    label: 'Orders',
+    link: {
+      icon: <OrdersIcon />,
+      route: '/orders',
+      label: 'Orders',
+      sublinks: null,
+    },
   },
   {
-    icon: <BannersIcon />,
-    route: '/banners',
-    label: 'Banners',
+    link: {
+      icon: <BannersIcon />,
+      route: '/banners',
+      label: 'Banners',
+      sublinks: null,
+    },
   },
   {
-    icon: <MessagesIcon />,
-    route: '/messages',
-    label: 'Messages',
+    link: {
+      icon: <MessagesIcon />,
+      route: '/messages',
+      label: 'Messages',
+      sublinks: null,
+    },
   },
 ]
