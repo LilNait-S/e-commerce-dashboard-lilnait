@@ -1,8 +1,7 @@
-import AuthSignInCard from '@/components/login/sign-in/email-client'
-import React from 'react'
+import SignInCard from '@/components/login/sign-in/sign-in-card'
 
 const Login = () => {
-  return <AuthSignInCard />
+  return <SignInCard />
 }
 
 export default Login

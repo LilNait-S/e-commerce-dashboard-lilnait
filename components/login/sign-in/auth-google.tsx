@@ -5,8 +5,8 @@ import {
 } from '@supabase/auth-helpers-nextjs'
 import { GoogleIcon } from '../../icons'
 import { Button } from '@/components/ui/button'
-// { session }: { session: Session | null }
-export function AuthGoogleButton() {
+
+export function AuthGoogle() {
   const supabase = createClientComponentClient()
 
   const handleSignIn = async () => {
