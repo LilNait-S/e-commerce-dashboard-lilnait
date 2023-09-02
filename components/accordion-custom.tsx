@@ -14,9 +14,11 @@ const AccordionCustom = ({ link, className }: LinkSidebar) => {
         <AccordionItem value={link.label} className='border-b-0 mb-2'>
           <Link
             href={link.route}
-            className={`w-full !justify-start ${className} ${buttonVariants({
-              variant: 'ghost',
-            })}`}
+            className={`w-full !justify-start ${className} ${buttonVariants(
+              {
+                variant: 'ghost',
+              }
+            )}`}
           >
             {link.icon}
             <span className='px-3'>{link.label}</span>
