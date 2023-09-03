@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ModeToggle } from '../themes/theme-switcher'
 import AvatarEntity from '../avatar'
-import { AuthSignOut } from '../login/auth-button-client-sign-out'
+import { AuthSignOut } from '../login/auth-sign-out'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'

@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { EyeIcon, EyeOffIcon } from '@/components/icons'
 import { useToggle } from '@/lib/hooks/use-toggle'
 import { useRouter } from 'next/navigation'
-import { errorNotify, successNotify } from '@/lib/common'
+import { errorNotify, successNotify } from '@/lib/common/notifys'
 
 const EmailAuth = () => {
   const router = useRouter()

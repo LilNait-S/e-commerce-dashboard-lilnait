@@ -20,7 +20,10 @@ import { useToggle } from '@/lib/hooks/use-toggle'
 import { useRouter } from 'next/navigation'
 import { loginUserSchema } from '@/lib/validations/auth/login'
 import Link from 'next/link'
-import { errorNotify, successNotify } from '@/lib/common'
+import { errorNotify, successNotify } from '@/lib/common/notifys'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+
 
 const AuthEmail = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
@@ -98,21 +101,14 @@ const AuthEmail = ({ children }: { children: React.ReactNode }) => {
         />
 
         <div className='flex items-center justify-between'>
-          <div className='flex items-start'>
-            <div className='flex items-center h-5'>
-              <input
-                id='remember'
-                aria-describedby='remember'
-                type='checkbox'
-                className='w-4 h-4'
-                required={true}
-              />
-            </div>
-            <div className='ml-3 text-sm'>
-              <label htmlFor='remember' className='text-muted-foreground'>
-                Remember me
-              </label>
-            </div>
+          <div className='flex items-center space-x-2'>
+            <Checkbox id='terms' />
+            <Label
+              htmlFor='terms'
+              className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            >
+              remember me
+            </Label>
           </div>
           <Link
             href='#'
