@@ -1,6 +1,6 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { AuthGoogle } from './sign-in/auth-google'
+import AuthEmail from './sign-in/auth-email'
 
 export async function AuthButtonServer() {
   const supabase = createServerComponentClient({ cookies })
@@ -8,5 +8,5 @@ export async function AuthButtonServer() {
     data: { session },
   } = await supabase.auth.getSession()
   // session={session}
-  return <AuthGoogle />
+  return <AuthEmail session={session} />
 }

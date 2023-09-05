@@ -24,7 +24,6 @@ import { errorNotify, successNotify } from '@/lib/common/notifys'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 
-
 const AuthEmail = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const supabase = createClientComponentClient()

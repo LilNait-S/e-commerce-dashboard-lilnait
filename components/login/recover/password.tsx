@@ -32,7 +32,11 @@ const RecoverPassword = () => {
 
   const onSubmit = async (values: z.infer<typeof loginUserSchema>) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(values.email)
+      const { error } = await supabase.auth.updateUser({
+        email: values.email,
+        password: values.password,
+        data: { hello: 'world' },
+      })
 
       if (error != null) return errorNotify({ message: error?.message })
       successNotify({ message: 'Successfully reset password.' })
