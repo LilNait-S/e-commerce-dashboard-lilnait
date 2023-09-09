@@ -10,7 +10,8 @@ import {
   ProductsIcon,
   ProfileIcon,
 } from '@/components/icons'
-import { type LinkSidebar } from '@/components/types.d'
+import { type LinkSidebar } from '@/components/types'
+
 
 export const sidebarLinks: LinkSidebar[] = [
   {

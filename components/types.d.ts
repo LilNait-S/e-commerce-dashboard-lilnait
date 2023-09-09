@@ -11,5 +11,5 @@ export interface LinkSidebar {
     label: string
     sublinks: Sublink[] | null
   }
-  className: string
+  className?: string
 }

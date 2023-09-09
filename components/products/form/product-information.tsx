@@ -2,6 +2,8 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import type * as z from 'zod'
 
 import {
   Form,
@@ -13,11 +15,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import type * as z from 'zod'
 import { ProductValidation } from '@/lib/validations/product'
 import { Textarea } from '@/components/ui/textarea'
+import { errorNotify, successNotify } from '@/lib/common/notifys'
 
 const ProductInformation = () => {
+  const supabase = createClientComponentClient()
+
   const form = useForm({
     resolver: zodResolver(ProductValidation),
     defaultValues: {
@@ -28,14 +32,30 @@ const ProductInformation = () => {
       image_url: '',
     },
   })
+  const { reset } = form
 
-  function onSubmit(values: z.infer<typeof ProductValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof ProductValidation>) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user === null) return
+    const content = { ...values, user_id: user.id }
+
+    const { data, error } = await supabase
+      .from('products')
+      .insert([content])
+      .select()
+
+    console.log('data', data)
+    console.log('error', error)
+
+    if (error != null) return errorNotify({ message: error?.message })
+    successNotify({ message: 'Success' })
+    reset()
   }
+
   return (
-    <div className='border-2 border-gray-900 p-6 rounded-md'>
+    <div className='border border-border p-6 rounded-md'>
       <h2 className='mb-6'>ProductInformation</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>

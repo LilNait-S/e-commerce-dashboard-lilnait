@@ -2,8 +2,8 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type * as z from 'zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import type * as z from 'zod'
 
 import {
   Form,
