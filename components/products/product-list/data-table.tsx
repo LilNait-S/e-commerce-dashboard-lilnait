@@ -22,10 +22,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 import { DataTablePagination } from '@/components/products/product-list/datatable-pagination'
+import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from '@/components/products/product-list/datatable-view-options'
+import { Button } from '@/components/ui/button'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className='flex items-center py-4 gap-5'>
+      {/* <div className='flex items-center py-4 gap-5'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -72,6 +73,9 @@ export function DataTable<TData, TValue>({
           className='max-w-sm'
         />
         <DataTableViewOptions table={table} />
+      </div> */}
+      <div>
+        <Button>Borrar</Button>
       </div>
 
       <div className='rounded-md border'>

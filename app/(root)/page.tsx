@@ -20,9 +20,9 @@ export default async function Home() {
     <div className='max-w-3xl flex flex-col gap-4'>
       {products?.map((product) => (
         <div key={product.id}>
-          <span>{product.title}</span>
+          <span>{product.name}</span>
           <hr />
-          <span>{product.content}</span>
+          <span>{product.description}</span>
         </div>
       ))}
     </div>

@@ -2,7 +2,6 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import type * as z from 'zod'
 
 import {
@@ -15,12 +14,14 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { ProductValidation } from '@/lib/validations/product'
 import { Textarea } from '@/components/ui/textarea'
-import { errorNotify, successNotify } from '@/lib/common/notifys'
 
-const ProductInformation = () => {
-  const supabase = createClientComponentClient()
+import { ProductValidation } from '@/lib/validations/product'
+import { useRouter } from 'next/navigation'
+import { createProduct } from '@/lib/actions/product.actions'
+
+const PostProduct = () => {
+  const router = useRouter()
 
   const form = useForm({
     resolver: zodResolver(ProductValidation),
@@ -32,26 +33,13 @@ const ProductInformation = () => {
       image_url: '',
     },
   })
-  const { reset } = form
 
   const onSubmit = async (values: z.infer<typeof ProductValidation>) => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (user === null) return
-    const content = { ...values, user_id: user.id }
-
-    const { data, error } = await supabase
-      .from('products')
-      .insert([content])
-      .select()
-
-    console.log('data', data)
-    console.log('error', error)
-
-    if (error != null) return errorNotify({ message: error?.message })
-    successNotify({ message: 'Success' })
-    reset()
+    await createProduct({
+      values,
+    })
+    router.push('/products/product-list')
+    router.refresh()
   }
 
   return (
@@ -126,4 +114,4 @@ const ProductInformation = () => {
   )
 }
 
-export default ProductInformation
+export default PostProduct

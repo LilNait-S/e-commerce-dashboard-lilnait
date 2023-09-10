@@ -14,10 +14,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { type Payment } from './payment'
-import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
+import { type Product } from './types'
+// import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -42,20 +42,28 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'name',
+    header: 'Name',
   },
   {
-    accessorKey: 'email',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email' />
-    ),
+    accessorKey: 'referential_code',
+    header: 'Referential code',
   },
   {
-    accessorKey: 'amount',
-    header: () => <div className='text-right'>Amount</div>,
+    accessorKey: 'description',
+    header: 'Description',
+  },
+  // {
+  //   accessorKey: 'email',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Email' />
+  //   ),
+  // },
+  {
+    accessorKey: 'price',
+    header: () => <div className='text-right'>Price</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'))
+      const amount = parseFloat(row.getValue('price'))
       const formatted = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -68,7 +76,6 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const payment = row.original
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
