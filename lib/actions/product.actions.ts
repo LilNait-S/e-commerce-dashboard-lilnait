@@ -3,7 +3,7 @@ import { errorNotify, successNotify } from '../common/notifys'
 import { type PostgrestSingleResponse } from '@supabase/supabase-js'
 import { type Product } from '@/components/products/product-list/types'
 
-export const revalidate = true
+// export const revalidate = true
 
 interface Params {
   values: {
