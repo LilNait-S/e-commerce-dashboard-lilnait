@@ -12,8 +12,7 @@ import {
 } from '@/components/icons'
 import { type LinkSidebar } from '@/components/types'
 
-
-export const sidebarLinks: LinkSidebar[] = [
+export const sidebarLinksTop: LinkSidebar[] = [
   {
     link: {
       icon: <OverviewIcon />,
@@ -46,6 +45,9 @@ export const sidebarLinks: LinkSidebar[] = [
       sublinks: null,
     },
   },
+]
+
+export const sidebarLinksBottom: LinkSidebar[] = [
   {
     link: {
       icon: <CustomersIcon />,
