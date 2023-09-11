@@ -1,21 +1,18 @@
 import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
 import { type PostgrestSingleResponse } from '@supabase/supabase-js'
-import { type Product } from '@/components/products/product-list/types'
+import {
+  type ProductDetails,
+  type ProductForm,
+} from '@/components/products/types'
 
 interface Params {
-  values: {
-    name: string
-    referential_code?: string
-    price: number
-    description: string
-  }
+  values: ProductForm
 }
 
 export const fetchProducts = async () => {
-  const { data: products }: PostgrestSingleResponse<Product[]> = await supabase
-    .from('products')
-    .select('*')
+  const { data: products }: PostgrestSingleResponse<ProductDetails[]> =
+    await supabase.from('products').select('*')
 
   if (!products) return { products: [] }
 
@@ -39,7 +36,7 @@ export const createProduct = async ({ values }: Params) => {
   }
 }
 
-export const deleteProduct = async ({ ids }: { ids: any[] }) => {
+export const deleteProduct = async ({ ids }: { ids: ProductDetails[] }) => {
   try {
     const {
       data: { user },

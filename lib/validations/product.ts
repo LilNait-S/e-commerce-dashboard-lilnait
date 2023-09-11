@@ -5,5 +5,4 @@ export const ProductValidation = z.object({
   referential_code: z.string(),
   price: z.coerce.number().min(0),
   description: z.string().max(2000, { message: 'maximum 2000 characters' }),
-  // image_url: z.string().url().nonempty(),
 })

@@ -3,13 +3,25 @@ import { deleteProduct } from '@/lib/actions/product.actions'
 import { TrashIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 
-const DeleteRows = ({ data, rowSelection, setRowSelection }) => {
+interface DataTableProps<TData> {
+  data: TData[]
+  rowSelection: Record<string, boolean>
+  setRowSelection: React.Dispatch<React.SetStateAction<Record<string, boolean>>>
+}
+
+export function DeleteRows<TData>({
+  data,
+  rowSelection,
+  setRowSelection,
+}: DataTableProps<TData>) {
   const router = useRouter()
   const handleDeleteRowSelected = async () => {
-    const idsParaBorrar = Object.keys(rowSelection)
-      .filter((indice) => rowSelection[indice])
-      .map((indice) => data[indice].id)
-    await deleteProduct({ ids: idsParaBorrar })
+    const idsToDelete = Object.keys(rowSelection)
+      .filter((index) => rowSelection[index])
+      .map((index) => data[parseInt(index)].id)
+
+    await deleteProduct({ ids: idsToDelete })
+
     router.refresh()
     setRowSelection({})
   }
@@ -25,5 +37,3 @@ const DeleteRows = ({ data, rowSelection, setRowSelection }) => {
     </Button>
   )
 }
-
-export default DeleteRows

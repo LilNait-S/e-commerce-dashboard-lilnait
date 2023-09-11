@@ -1,4 +1,4 @@
-import PostProduct from '@/components/products/form/product-information'
+import PostProduct from '@/components/products/add-product/post-product'
 
 const page = () => {
   return (

@@ -14,10 +14,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { type Product } from './types'
-// import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
+import { type ProductDetails } from '@/components/products/types'
+import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<ProductDetails>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -43,7 +43,9 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Name' />
+    ),
   },
   {
     accessorKey: 'referential_code',
@@ -53,12 +55,6 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: 'description',
     header: 'Description',
   },
-  // {
-  //   accessorKey: 'email',
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title='Email' />
-  //   ),
-  // },
   {
     accessorKey: 'price',
     header: () => <div className='text-right'>Price</div>,

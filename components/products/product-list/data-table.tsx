@@ -26,7 +26,8 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { DataTablePagination } from '@/components/products/product-list/datatable-pagination'
 import { DataTableViewOptions } from '@/components/products/product-list/datatable-view-options'
-import DeleteRows from './delete-rows'
+import { DeleteRows } from './delete-rows'
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
