@@ -1,5 +1,4 @@
 import ListInformation from '@/components/products/product-list/list-information'
-import React from 'react'
 
 const Page = () => {
   return (

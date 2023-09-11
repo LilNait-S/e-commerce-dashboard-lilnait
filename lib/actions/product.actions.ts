@@ -3,8 +3,6 @@ import { errorNotify, successNotify } from '../common/notifys'
 import { type PostgrestSingleResponse } from '@supabase/supabase-js'
 import { type Product } from '@/components/products/product-list/types'
 
-// export const revalidate = true
-
 interface Params {
   values: {
     name: string
@@ -38,5 +36,19 @@ export const createProduct = async ({ values }: Params) => {
     successNotify({ message: 'Success when creating the product' })
   } catch (error: any) {
     throw new Error(`Failed to create product: ${error.message}`)
+  }
+}
+
+export const deleteProduct = async ({ ids }: { ids: any[] }) => {
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user === null) return
+
+    const { error } = await supabase.from('products').delete().in('id', ids)
+    console.log(error)
+  } catch (error: any) {
+    throw new Error(`Failed to delete product(s): ${error.message}`)
   }
 }

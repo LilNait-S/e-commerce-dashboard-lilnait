@@ -23,10 +23,10 @@ import {
 } from '@/components/ui/table'
 
 import { useState } from 'react'
-import { DataTablePagination } from '@/components/products/product-list/datatable-pagination'
 import { Input } from '@/components/ui/input'
+import { DataTablePagination } from '@/components/products/product-list/datatable-pagination'
 import { DataTableViewOptions } from '@/components/products/product-list/datatable-view-options'
-import { Button } from '@/components/ui/button'
+import DeleteRows from './delete-rows'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -42,17 +42,17 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
-  console.log('->', rowSelection)
-  
   const table = useReactTable({
     data,
     columns,
+
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -65,19 +65,23 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {/* <div className='flex items-center py-4 gap-5'>
-        <Input
-          placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
+      <div className='flex justify-between items-center'>
+        <div className='flex items-center py-4 gap-5'>
+          <Input
+            placeholder='Filter names...'
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) =>
+              table.getColumn('name')?.setFilterValue(event.target.value)
+            }
+            className='max-w-sm'
+          />
+          <DataTableViewOptions table={table} />
+        </div>
+        <DeleteRows
+          data={data}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-        <DataTableViewOptions table={table} />
-      </div> */}
-      <div>
-        <Button>Borrar</Button>
       </div>
 
       <div className='rounded-md border'>
