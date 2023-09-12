@@ -3,16 +3,16 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies })
+   const supabaseServer = createServerComponentClient({ cookies })
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabaseServer.auth.getSession()
 
   if (session === null) {
     redirect('/login')
   }
 
-  const { data: products } = await supabase
+  const { data: products } = await supabaseServer
     .from('products')
     .select('*, users(id, name, email, avatar_url)')
 

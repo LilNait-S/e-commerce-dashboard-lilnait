@@ -1,6 +1,9 @@
 import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
-import { type SupabaseClient, type PostgrestSingleResponse } from '@supabase/supabase-js'
+import {
+  type SupabaseClient,
+  type PostgrestSingleResponse,
+} from '@supabase/supabase-js'
 import {
   type ProductDetails,
   type ProductForm,
