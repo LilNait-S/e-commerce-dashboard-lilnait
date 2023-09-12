@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type * as z from 'zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 
 import {
   Form,
@@ -21,7 +21,6 @@ import { useToggle } from '@/lib/hooks/use-toggle'
 import { EyeIcon, EyeOffIcon } from '@/components/icons'
 
 const RecoverPassword = () => {
-  const supabase = createClientComponentClient()
   const form = useForm({
     resolver: zodResolver(loginUserSchema),
     defaultValues: {

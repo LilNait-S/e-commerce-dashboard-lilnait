@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { registerUserSchema } from '@/lib/validations/auth/register'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type * as z from 'zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 
 import {
   Form,
@@ -23,7 +23,6 @@ import { errorNotify, successNotify } from '@/lib/common/notifys'
 
 const EmailAuth = () => {
   const router = useRouter()
-  const supabase = createClientComponentClient()
 
   const form = useForm({
     resolver: zodResolver(registerUserSchema),

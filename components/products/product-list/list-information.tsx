@@ -1,12 +1,17 @@
 import { columns } from '@/components/products/product-list/columns'
 import { DataTable } from '@/components/products/product-list/data-table'
+
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+
 import { fetchProducts } from '@/lib/actions/product.actions'
 
 const ListInformation = async () => {
-  const { products } = await fetchProducts()
+  const supabaseServer = createServerComponentClient({ cookies })
+  const { products } = await fetchProducts({ supabaseServer })
 
   return (
-    <div className=''>
+    <div>
       <DataTable columns={columns} data={products} />
     </div>
   )

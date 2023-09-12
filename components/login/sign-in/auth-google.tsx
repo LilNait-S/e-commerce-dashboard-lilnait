@@ -1,14 +1,10 @@
 'use client'
 
-import {
-  createClientComponentClient,
-} from '@supabase/auth-helpers-nextjs'
 import { GoogleIcon } from '../../icons'
 import { Button } from '@/components/ui/button'
+import { supabase } from '@/lib/supabase'
 
 export function AuthGoogle() {
-  const supabase = createClientComponentClient()
-
   const handleSignIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',

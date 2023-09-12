@@ -72,11 +72,6 @@ export const sidebarLinksBottom: LinkSidebar[] = [
           route: '/products/product-list',
           label: 'Product list',
         },
-        {
-          icon: <DotIcon />,
-          route: '/products/category-list',
-          label: 'Category list',
-        },
       ],
     },
   },

@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type * as z from 'zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 
 import {
   Form,
@@ -20,7 +20,6 @@ import { identifyUserSchema } from '@/lib/validations/auth/identify'
 import Link from 'next/link'
 
 const EmailIdentify = () => {
-  const supabase = createClientComponentClient()
   const form = useForm({
     resolver: zodResolver(identifyUserSchema),
     defaultValues: {

@@ -19,6 +19,7 @@
 		"@typescript-eslint/no-misused-promises": "off",
 		"@typescript-eslint/space-before-function-paren": "off",
 		"@typescript-eslint/array-type": "off",
-		"@typescript-eslint/strict-boolean-expressions": "off"
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/naming-convention": "off"
 	}
 }

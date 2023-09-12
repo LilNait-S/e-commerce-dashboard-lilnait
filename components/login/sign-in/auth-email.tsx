@@ -2,8 +2,8 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import type * as z from 'zod'
+import { supabase } from '@/lib/supabase'
 
 import {
   Form,
@@ -26,7 +26,6 @@ import { Label } from '@/components/ui/label'
 
 const AuthEmail = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
-  const supabase = createClientComponentClient()
 
   const form = useForm({
     resolver: zodResolver(loginUserSchema),

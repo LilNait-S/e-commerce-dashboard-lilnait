@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
-import { type PostgrestSingleResponse } from '@supabase/supabase-js'
+import { type SupabaseClient, type PostgrestSingleResponse } from '@supabase/supabase-js'
 import {
   type ProductDetails,
   type ProductForm,
@@ -10,9 +10,13 @@ interface Params {
   values: ProductForm
 }
 
-export const fetchProducts = async () => {
+export const fetchProducts = async ({
+  supabaseServer,
+}: {
+  supabaseServer: SupabaseClient<any, 'public', any>
+}) => {
   const { data: products }: PostgrestSingleResponse<ProductDetails[]> =
-    await supabase.from('products').select('*')
+    await supabaseServer.from('products').select('*')
 
   if (!products) return { products: [] }
 
@@ -25,6 +29,7 @@ export const createProduct = async ({ values }: Params) => {
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
+
     const content = { ...values, user_id: user.id }
 
     const { error } = await supabase.from('products').insert([content])
@@ -44,7 +49,8 @@ export const deleteProduct = async ({ ids }: { ids: ProductDetails[] }) => {
     if (user === null) return
 
     const { error } = await supabase.from('products').delete().in('id', ids)
-    console.log(error)
+    if (error != null) return errorNotify({ message: error?.message })
+    successNotify({ message: 'Success when deleting the product' })
   } catch (error: any) {
     throw new Error(`Failed to delete product(s): ${error.message}`)
   }
