@@ -87,3 +87,30 @@ export const deleteProduct = async ({ ids }: { ids: ProductDetails[] }) => {
     throw new Error(`Failed to delete product(s): ${error.message}`)
   }
 }
+
+export const updateProduct = async ({
+  values,
+  productId,
+}: {
+  values: ProductForm
+  productId: string
+}) => {
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user === null) return
+
+    const content = { ...values, user_id: user.id }
+
+    const { error } = await supabase
+      .from('products')
+      .update(content)
+      .eq('id', productId)
+
+    if (error != null) return errorNotify({ message: error?.message })
+    successNotify({ message: 'Success when editing the product' })
+  } catch (error: any) {
+    throw new Error(`Failed to editing product: ${error.message}`)
+  }
+}

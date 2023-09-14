@@ -18,8 +18,9 @@ import { Textarea } from '@/components/ui/textarea'
 
 import { ProductValidation } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
-import { createProduct } from '@/lib/actions/product.actions'
+import { createProduct, updateProduct } from '@/lib/actions/product.actions'
 import { type ProductDetails } from '../types'
+import { useState } from 'react'
 
 interface Props {
   type: string
@@ -28,7 +29,7 @@ interface Props {
 
 const ProductForm = ({ type, product }: Props) => {
   const router = useRouter()
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm({
     resolver: zodResolver(ProductValidation),
     defaultValues: {
@@ -40,10 +41,22 @@ const ProductForm = ({ type, product }: Props) => {
   })
 
   const onSubmit = async (values: z.infer<typeof ProductValidation>) => {
-    await createProduct({
-      values,
-    })
-    router.push('/products/product-list')
+    setIsSubmitting(true)
+
+    try {
+      if (type === 'create') {
+        await createProduct({
+          values,
+        })
+        router.push('/products/product-list')
+      }
+      if (type === 'edit') {
+        await updateProduct({ values, productId: product?.id as string })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+
     router.refresh()
   }
 
@@ -112,7 +125,11 @@ const ProductForm = ({ type, product }: Props) => {
             )}
           />
 
-          <Button type='submit'>Submit</Button>
+          <Button type='submit'>
+            {isSubmitting
+              ? `${type === 'create' ? 'Creating' : 'Editing'}`
+              : `${type === 'create' ? 'Create' : 'Edit'}`}
+          </Button>
         </form>
       </Form>
     </div>
