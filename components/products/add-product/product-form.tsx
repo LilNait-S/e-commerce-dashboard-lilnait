@@ -19,18 +19,23 @@ import { Textarea } from '@/components/ui/textarea'
 import { ProductValidation } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/lib/actions/product.actions'
+import { type ProductDetails } from '../types'
 
-const PostProduct = () => {
+interface Props {
+  type: string
+  product?: ProductDetails
+}
+
+const ProductForm = ({ type, product }: Props) => {
   const router = useRouter()
 
   const form = useForm({
     resolver: zodResolver(ProductValidation),
     defaultValues: {
-      name: '',
-      referential_code: '',
-      price: 0,
-      description: '',
-      image_url: '',
+      name: product?.name ?? '',
+      referential_code: product?.referential_code ?? '',
+      price: product?.price ?? 0,
+      description: product?.description ?? '',
     },
   })
 
@@ -114,4 +119,4 @@ const PostProduct = () => {
   )
 }
 
-export default PostProduct
+export default ProductForm

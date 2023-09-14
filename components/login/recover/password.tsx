@@ -82,6 +82,7 @@ const RecoverPassword = () => {
                 className='absolute right-0 top-6'
                 onClick={togglePassword}
               >
+                <span className='sr-only'>Show password</span>
                 {showPassword ? <EyeOffIcon /> : <EyeIcon />}
               </Button>
               <FormMessage />

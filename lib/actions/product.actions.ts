@@ -18,12 +18,41 @@ export const fetchProducts = async ({
 }: {
   supabaseServer: SupabaseClient<any, 'public', any>
 }) => {
-  const { data: products }: PostgrestSingleResponse<ProductDetails[]> =
+  const { data: products, error }: PostgrestSingleResponse<ProductDetails[]> =
     await supabaseServer.from('products').select('*')
 
-  if (!products) return { products: [] }
+  if (error) {
+    throw new Error('Products not found')
+  }
+  if (!products) {
+    throw new Error('Products not found')
+  }
 
   return { products }
+}
+
+export const getProductDetails = async ({
+  id,
+  supabaseServer,
+}: {
+  id: string
+  supabaseServer: SupabaseClient<any, 'public', any>
+}) => {
+  const { data: products, error } = await supabaseServer
+    .from('products')
+    .select('*')
+    .eq('id', id)
+
+  if (error) {
+    throw new Error('Product not found')
+  }
+  if (!products) {
+    throw new Error('Product not found')
+  }
+
+  const product = products[0]
+
+  return { product }
 }
 
 export const createProduct = async ({ values }: Params) => {
