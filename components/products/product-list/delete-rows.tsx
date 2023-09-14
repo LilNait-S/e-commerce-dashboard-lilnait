@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { deleteProduct } from '@/lib/actions/product.actions'
+import { deleteProducts } from '@/lib/actions/product.actions'
 import { TrashIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 
@@ -20,7 +20,7 @@ export function DeleteRows<TData>({
       .filter((index) => rowSelection[index])
       .map((index) => data[parseInt(index)].id)
 
-    await deleteProduct({ ids: idsToDelete })
+    await deleteProducts({ ids: idsToDelete })
 
     router.refresh()
     setRowSelection({})

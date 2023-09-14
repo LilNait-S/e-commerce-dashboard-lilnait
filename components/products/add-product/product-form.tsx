@@ -42,7 +42,6 @@ const ProductForm = ({ type, product }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof ProductValidation>) => {
     setIsSubmitting(true)
-
     try {
       if (type === 'create') {
         await createProduct({
@@ -52,9 +51,12 @@ const ProductForm = ({ type, product }: Props) => {
       }
       if (type === 'edit') {
         await updateProduct({ values, productId: product?.id as string })
+        router.push('/products/product-list')
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      setIsSubmitting(false)
     }
 
     router.refresh()

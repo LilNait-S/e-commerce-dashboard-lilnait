@@ -5,10 +5,8 @@ import { fetchProducts } from '@/lib/actions/product.actions'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
-
-
 const ListInformation = async () => {
-   const supabaseServer = createServerComponentClient({ cookies })
+  const supabaseServer = createServerComponentClient({ cookies })
   const { products } = await fetchProducts({ supabaseServer })
 
   return (

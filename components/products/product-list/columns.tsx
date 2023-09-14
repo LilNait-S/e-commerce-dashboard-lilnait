@@ -2,9 +2,11 @@
 
 import { type ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
-import { Checkbox } from '@/components/ui/checkbox'
 
-import { Button } from '@/components/ui/button'
+import { Pencil2Icon } from '@radix-ui/react-icons'
+
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,27 +18,36 @@ import {
 
 import { type ProductDetails } from '@/components/products/types'
 import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
+import Link from 'next/link'
+import DeleteRow from './delete-row'
+import { Label } from '@radix-ui/react-label'
 
 export const columns: ColumnDef<ProductDetails>[] = [
   {
     id: 'select',
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => {
-          table.toggleAllPageRowsSelected(!!value)
-        }}
-        aria-label='Select all'
-      />
+      <Label className='p-2'>
+        <Checkbox
+          className='!mt-[6px]'
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => {
+            table.toggleAllPageRowsSelected(!!value)
+          }}
+          aria-label='Select all'
+        />
+      </Label>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => {
-          row.toggleSelected(!!value)
-        }}
-        aria-label='Select row'
-      />
+      <Label className='p-2'>
+        <Checkbox
+          className='!mt-[6px]'
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value)
+          }}
+          aria-label='Select row'
+        />
+      </Label>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -72,9 +83,17 @@ export const columns: ColumnDef<ProductDetails>[] = [
     id: 'actions',
     header: () => <div className='text-center'>Actions</div>,
     cell: ({ row }) => {
-      const payment = row.original
+      const product = row.original
       return (
-        <div className='text-center font-medium'>
+        <div className='text-center font-medium flex items-center justify-center'>
+          <Link
+            href={`/products/edit-product/${product.id}`}
+            className={`h-8 w-8 !p-0 ${buttonVariants({ variant: 'ghost' })}`}
+          >
+            <span className='sr-only'>Edit product</span>
+            <Pencil2Icon className='h-4 w-4' />
+          </Link>
+          <DeleteRow id={product.id} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
@@ -86,10 +105,10 @@ export const columns: ColumnDef<ProductDetails>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => {
-                  navigator.clipboard.writeText(payment.id)
+                  navigator.clipboard.writeText(product.id)
                 }}
               >
-                Copy payment ID
+                Copy product ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>View customer</DropdownMenuItem>

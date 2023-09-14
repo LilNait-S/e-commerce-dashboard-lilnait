@@ -73,7 +73,22 @@ export const createProduct = async ({ values }: Params) => {
   }
 }
 
-export const deleteProduct = async ({ ids }: { ids: ProductDetails[] }) => {
+export const deleteProduct = async ({ id }: { id: string }) => {
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user === null) return
+
+    const { error } = await supabase.from('products').delete().eq('id', id)
+    if (error != null) return errorNotify({ message: error?.message })
+    successNotify({ message: 'Success when deleting the product' })
+  } catch (error: any) {
+    throw new Error(`Failed to delete product: ${error.message}`)
+  }
+}
+
+export const deleteProducts = async ({ ids }: { ids: string[] }) => {
   try {
     const {
       data: { user },
@@ -82,7 +97,7 @@ export const deleteProduct = async ({ ids }: { ids: ProductDetails[] }) => {
 
     const { error } = await supabase.from('products').delete().in('id', ids)
     if (error != null) return errorNotify({ message: error?.message })
-    successNotify({ message: 'Success when deleting the product' })
+    successNotify({ message: 'Success when deleting the product(s)' })
   } catch (error: any) {
     throw new Error(`Failed to delete product(s): ${error.message}`)
   }
