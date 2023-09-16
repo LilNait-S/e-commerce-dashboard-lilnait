@@ -25,6 +25,8 @@ import Link from 'next/link'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
+import ProductSizes from './product-variants'
+import ProductVariants from './product-variants'
 
 interface Props {
   type: string
@@ -105,83 +107,86 @@ const ProductForm = ({ type, product }: Props) => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <header className='flex justify-between items-center mb-4'>
-          <h1 className='title-product'>
-            {type === 'create' ? 'Add a new Product' : 'Edit Product'}
-          </h1>
-          <div className='space-x-3'>
-            <Button type='button' variant='outline'>
-              Save draft
-            </Button>
-            <Button type='submit'>
-              {isSubmitting
-                ? `${type === 'create' ? 'Publishing' : 'Editing'}`
-                : `${type === 'create' ? 'Publish' : 'Edit'}`}
-            </Button>
-          </div>
-        </header>
-
-        <section className='border border-border p-6 rounded-md space-y-6'>
-          <h2 className='sub-title-product'>Information</h2>
-          <FormField
-            control={form.control}
-            name='name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder='Product title' {...field} type='text' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='slug'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Slug</FormLabel>
-                <FormControl>
-                  <Input {...field} type='text' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='referential_code'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Referential Code</FormLabel>
-                <FormControl>
-                  <Input placeholder='0123AB-4567CD' {...field} type='text' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='description'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    rows={10}
-                    placeholder='Product description'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* <FormField
+    <>
+      <header className='flex justify-between items-center mb-4'>
+        <h1 className='title-product'>
+          {type === 'create' ? 'Add a new Product' : 'Edit Product'}
+        </h1>
+        <div className='space-x-3'>
+          <Button type='button' variant='outline'>
+            Save draft
+          </Button>
+          <Button type='submit'>
+            {isSubmitting
+              ? `${type === 'create' ? 'Publishing' : 'Editing'}`
+              : `${type === 'create' ? 'Publish' : 'Edit'}`}
+          </Button>
+        </div>
+      </header>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='flex flex-wrap gap-6'
+        >
+          <section className='border border-border p-6 rounded-md space-y-6 flex-1'>
+            <h2 className='sub-title-product'>Information</h2>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Product title' {...field} type='text' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='slug'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <Input {...field} type='text' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='referential_code'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Referential Code</FormLabel>
+                  <FormControl>
+                    <Input placeholder='0123AB-4567CD' {...field} type='text' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={10}
+                      placeholder='Product description'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <FormField
             control={form.control}
             name='media'
             render={({ field }) => (
@@ -222,23 +227,27 @@ const ProductForm = ({ type, product }: Props) => {
             )}
           /> */}
 
-          <ProductImage />
+            <ProductImage />
 
-          <section>
-            <h2 className='sub-title-product'>Organize</h2>
+            <section>
+              <h2 className='sub-title-product'>Organize</h2>
 
-            <div className='flex justify-between mb-3'>
-              <span>Category</span>
-              <Link href='/' className='text-primary'>
-                Add new category
-              </Link>
-            </div>
-            <ProductCategory />
+              <div className='flex justify-between mb-3'>
+                <span>Category</span>
+                <Link href='/' className='text-primary'>
+                  Add new category
+                </Link>
+              </div>
+              <ProductCategory />
+            </section>
+            <ProductTag />
           </section>
-          <ProductTag />
-        </section>
-      </form>
-    </Form>
+          <section className='flex-1 min-w-[280px]'>
+            <ProductVariants form={form} />
+          </section>
+        </form>
+      </Form>
+    </>
   )
 }
 
