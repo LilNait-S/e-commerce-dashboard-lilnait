@@ -85,4 +85,10 @@
   .leftsidebar_link {
     @apply relative flex justify-start gap-4 rounded-lg px-5 py-3;
   }
+
+  /* product */
+
+  .sub-title-product{
+    @apply mb-6 text-purple-500 text-lg
+  }
 }

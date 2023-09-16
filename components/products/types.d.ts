@@ -1,16 +1,24 @@
 export interface ProductDetails {
   id: string
+  user_id: string
   name: string
-  referential_code?: string
+  slug: string
+  referential_code: string | null
   description: string
-  price: number
-  user_id?: string
-  created_at: Date
+  categorys_id: number
+  created_at: string
+  inventory_id?: string
+  media: string
+  tags_id: number
 }
 
 export interface ProductForm {
   name: string
-  referential_code?: string
+  slug: string
+  referential_code?: string | null
   description: string
-  price: number
+  media: string | string[]
+  categorys_id?: number
+  tags_id?: number | number[] 
+  inventory_id?: string | string[]
 }

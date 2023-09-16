@@ -15,7 +15,7 @@ export default async function Home() {
     .select('*, users(id, name, email, avatar_url)')
 
   return (
-    <div className='max-w-3xl flex flex-col gap-4'>
+    <div className='flex flex-col gap-4'>
       {products?.map((product) => (
         <div key={product.id}>
           <span>{product.name}</span>

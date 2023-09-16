@@ -16,11 +16,13 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-import { ProductValidation } from '@/lib/validations/product'
+import { productSchema } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
 import { type ProductDetails } from '../types'
 import { useState } from 'react'
+import Link from 'next/link'
+import ProductCategory from './product-category'
 
 interface Props {
   type: string
@@ -29,18 +31,56 @@ interface Props {
 
 const ProductForm = ({ type, product }: Props) => {
   const router = useRouter()
+  const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm({
-    resolver: zodResolver(ProductValidation),
+    resolver: zodResolver(productSchema),
     defaultValues: {
       name: product?.name ?? '',
+      slug: product?.slug ?? '',
       referential_code: product?.referential_code ?? '',
-      price: product?.price ?? 0,
       description: product?.description ?? '',
+      media: product?.media ?? '',
+      categorys_id: product?.categorys_id ?? undefined,
+      tags_id: product?.tags_id ?? undefined,
+      inventory_id: product?.inventory_id ?? '',
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof ProductValidation>) => {
+  const handleImage = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    e.preventDefault()
+
+    // Crea una nueva instancia de FileReader para leer el archivo seleccionado.
+    const fileReader = new FileReader()
+
+    // Verifica si se seleccionaron archivos.
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+
+      // Actualiza el estado con los archivos seleccionados.
+      setFiles(Array.from(e.target.files))
+
+      // Verifica si el archivo seleccionado es una imagen.
+      if (!file.type.includes('image')) return
+
+      // Define un manejador de eventos para cuando el FileReader termine de cargar el archivo.
+      fileReader.onload = async (e) => {
+        // Recupera la URL de Datos que representa la imagen.
+        const imageDataUrl = e.target?.result?.toString() ?? ''
+
+        // Llama a la función de devolución de llamada proporcionada para actualizar el campo con la URL de Datos de la imagen.
+        fieldChange(imageDataUrl)
+      }
+
+      // Lee el archivo seleccionado como una URL de Datos.
+      fileReader.readAsDataURL(file)
+    }
+  }
+
+  const onSubmit = async (values: z.infer<typeof productSchema>) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
@@ -64,7 +104,7 @@ const ProductForm = ({ type, product }: Props) => {
 
   return (
     <div className='border border-border p-6 rounded-md'>
-      <h2 className='mb-6'>ProductInformation</h2>
+      <h2 className='sub-title-product'>Information</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <FormField
@@ -83,12 +123,12 @@ const ProductForm = ({ type, product }: Props) => {
 
           <FormField
             control={form.control}
-            name='referential_code'
+            name='slug'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Referential Code</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder='0123AB-4567CD' {...field} type='text' />
+                  <Input {...field} type='text' />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -97,12 +137,12 @@ const ProductForm = ({ type, product }: Props) => {
 
           <FormField
             control={form.control}
-            name='price'
+            name='referential_code'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Referential Code</FormLabel>
                 <FormControl>
-                  <Input {...field} type='number' />
+                  <Input placeholder='0123AB-4567CD' {...field} type='text' />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,6 +166,59 @@ const ProductForm = ({ type, product }: Props) => {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name='media'
+            render={({ field }) => (
+              <FormItem className='flex items-center gap-4'>
+                <FormLabel className='account-form_image-label'>
+                  {field.value ? (
+                    <img
+                      src={field.value}
+                      alt='profile photo'
+                      width={96}
+                      height={96}
+                      className='rounded-full object-contain'
+                    />
+                  ) : (
+                    <img
+                      src='/assets/profile.svg'
+                      alt='profile photo'
+                      width={96}
+                      height={96}
+                      className='object-contain'
+                    />
+                  )}
+                </FormLabel>
+                <FormControl className='flex-1 text-base-semibold text-gray-200'>
+                  <Input
+                    type='file'
+                    accept='image/*'
+                    placeholder='Upload a photo'
+                    className='account-form_image-input'
+                    onChange={(e) => {
+                      handleImage(e, field.onChange)
+                    }}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <section>
+            <h2 className='sub-title-product'>Organize</h2>
+
+            <div className='flex justify-between mb-3'>
+              <span>Category</span>
+              <Link href='/' className='text-primary'>
+                Add new category
+              </Link>
+            </div>
+            <ProductCategory />
+          </section>
 
           <Button type='submit'>
             {isSubmitting
