@@ -88,6 +88,9 @@
 
   /* product */
 
+  .title-product {
+    @apply text-2xl font-bold
+  }
   .sub-title-product{
     @apply mb-6 text-purple-500 text-lg
   }

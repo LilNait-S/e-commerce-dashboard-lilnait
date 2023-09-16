@@ -10,12 +10,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
     product?: ProductDetails
   }
 
-  return (
-    <section>
-      <h1 className='text-2xl font-bold mb-5'>Add Product</h1>
-      <ProductForm type='edit' product={product} />
-    </section>
-  )
+  return <ProductForm type='edit' product={product} />
 }
 
 export default page

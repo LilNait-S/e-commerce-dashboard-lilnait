@@ -23,6 +23,8 @@ import { type ProductDetails } from '../types'
 import { useState } from 'react'
 import Link from 'next/link'
 import ProductCategory from './product-category'
+import ProductTag from './product-tag'
+import ProductImage from './product-image'
 
 interface Props {
   type: string
@@ -103,10 +105,26 @@ const ProductForm = ({ type, product }: Props) => {
   }
 
   return (
-    <div className='border border-border p-6 rounded-md'>
-      <h2 className='sub-title-product'>Information</h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <header className='flex justify-between items-center mb-4'>
+          <h1 className='title-product'>
+            {type === 'create' ? 'Add a new Product' : 'Edit Product'}
+          </h1>
+          <div className='space-x-3'>
+            <Button type='button' variant='outline'>
+              Save draft
+            </Button>
+            <Button type='submit'>
+              {isSubmitting
+                ? `${type === 'create' ? 'Publishing' : 'Editing'}`
+                : `${type === 'create' ? 'Publish' : 'Edit'}`}
+            </Button>
+          </div>
+        </header>
+
+        <section className='border border-border p-6 rounded-md space-y-6'>
+          <h2 className='sub-title-product'>Information</h2>
           <FormField
             control={form.control}
             name='name'
@@ -120,13 +138,12 @@ const ProductForm = ({ type, product }: Props) => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name='slug'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Slug</FormLabel>
                 <FormControl>
                   <Input {...field} type='text' />
                 </FormControl>
@@ -134,7 +151,6 @@ const ProductForm = ({ type, product }: Props) => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name='referential_code'
@@ -148,7 +164,6 @@ const ProductForm = ({ type, product }: Props) => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name='description'
@@ -166,8 +181,7 @@ const ProductForm = ({ type, product }: Props) => {
               </FormItem>
             )}
           />
-
-          <FormField
+          {/* <FormField
             control={form.control}
             name='media'
             render={({ field }) => (
@@ -206,7 +220,9 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
+
+          <ProductImage />
 
           <section>
             <h2 className='sub-title-product'>Organize</h2>
@@ -219,15 +235,10 @@ const ProductForm = ({ type, product }: Props) => {
             </div>
             <ProductCategory />
           </section>
-
-          <Button type='submit'>
-            {isSubmitting
-              ? `${type === 'create' ? 'Creating' : 'Editing'}`
-              : `${type === 'create' ? 'Create' : 'Edit'}`}
-          </Button>
-        </form>
-      </Form>
-    </div>
+          <ProductTag />
+        </section>
+      </form>
+    </Form>
   )
 }
 
