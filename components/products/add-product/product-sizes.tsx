@@ -12,7 +12,7 @@ const ProductSizes = ( {form }: { form: any }) => {
   return (
     <Select>
       <SelectTrigger>
-        <SelectValue placeholder='Select a fruit' />
+        <SelectValue placeholder='Select a size' />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
