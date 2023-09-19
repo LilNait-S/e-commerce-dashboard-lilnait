@@ -227,7 +227,7 @@ const ProductForm = ({ type, product }: Props) => {
             )}
           /> */}
 
-            <ProductImage />
+            <ProductImage form={form} />
 
             <section>
               <h2 className='sub-title-product'>Organize</h2>
