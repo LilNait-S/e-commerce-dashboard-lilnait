@@ -25,7 +25,6 @@ import Link from 'next/link'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
-import ProductSizes from './product-variants'
 import ProductVariants from './product-variants'
 
 interface Props {
