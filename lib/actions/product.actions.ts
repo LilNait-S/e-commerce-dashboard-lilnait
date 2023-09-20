@@ -129,3 +129,18 @@ export const updateProduct = async ({
     throw new Error(`Failed to editing product: ${error.message}`)
   }
 }
+
+export const fetchCategorys = async () => {
+  const { data: categorys, error } = await supabase
+    .from('categorys')
+    .select('*')
+
+  if (error) {
+    throw new Error('Categorys not found')
+  }
+  if (!categorys) {
+    throw new Error('Categorys not found')
+  }
+
+  return { categorys }
+}

@@ -227,20 +227,10 @@ const ProductForm = ({ type, product }: Props) => {
           /> */}
 
             <ProductImage form={form} />
-
-            <section>
-              <h2 className='sub-title-product'>Organize</h2>
-
-              <div className='flex justify-between mb-3'>
-                <span>Category</span>
-                <Link href='/' className='text-primary'>
-                  Add new category
-                </Link>
-              </div>
-              <ProductCategory />
-            </section>
+            <ProductCategory />
             <ProductTag />
           </section>
+
           <section className='flex-1 min-w-[280px]'>
             <ProductVariants form={form} />
           </section>
