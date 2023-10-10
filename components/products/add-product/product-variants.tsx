@@ -32,61 +32,57 @@ const ProductVariants = ({ form }: { form: any }) => {
         />
         <ProductDelete />
       </header>
-      <ProductSizes form={form} />
-      <FormField
-        control={form.control}
-        name='price'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Price</FormLabel>
-            <FormControl>
-              <Input {...field} type='number' />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <main className='flex items-center gap-5'>
+        <FormItem className='flex-1'>
+          <FormLabel>Size</FormLabel>
+          <ProductSizes form={form} />
+        </FormItem>
+
+        <FormField
+          control={form.control}
+          name='price'
+          render={({ field }) => (
+            <FormItem className='flex-1'>
+              <FormLabel>Price</FormLabel>
+              <FormControl>
+                <Input {...field} type='number' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </main>
+
       <h2 className='sub-title-product'>Optional</h2>
-      <FormField
-        control={form.control}
-        name='available_quantity'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Available quantity</FormLabel>
-            <FormControl>
-              <Input {...field} type='number' />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name='on_offer'
-        render={({ field }) => (
-          <FormItem className='flex flex-row'>
-            <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
-            </FormControl>
-            <FormLabel className='text-base !mt-0 ml-2'>
-              It's on offer?
-            </FormLabel>
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name='offer_price'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Offer price</FormLabel>
-            <FormControl>
-              <Input {...field} type='number' />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className='flex items-center gap-5'>
+        <FormField
+          control={form.control}
+          name='available_quantity'
+          render={({ field }) => (
+            <FormItem className='flex-1'>
+              <FormLabel>Available quantity</FormLabel>
+              <FormControl>
+                <Input {...field} type='number' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='offer_price'
+          render={({ field }) => (
+            <FormItem className='flex-1'>
+              <FormLabel>Offer price</FormLabel>
+              <FormControl>
+                <Input {...field} type='number' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </section>
   )
 }

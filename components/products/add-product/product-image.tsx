@@ -24,7 +24,6 @@ const ProductImage = ({ form }: any) => {
     if (!files || files.length === 0) return
 
     const imagePromises = []
-
     let id = 1
 
     for (let i = 0; i < files.length; i++) {
@@ -73,7 +72,7 @@ const ProductImage = ({ form }: any) => {
       control={form.control}
       name='media'
       render={({ field }) => (
-        <FormItem className=''>
+        <FormItem>
           <FormLabel>Media</FormLabel>
           <div className='flex items-center justify-center w-full py-2'>
             <FormLabel

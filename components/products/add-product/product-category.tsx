@@ -33,10 +33,10 @@ const ProductCategory = () => {
     <section>
       <h2 className='sub-title-product'>Organize</h2>
       <div className='flex justify-between mb-3'>
-        <Label>Category</Label>
+        <h3 className='text-sm font-medium leading-none'>Category</h3>
         <Link
           href='/'
-          className={`text-purple-500 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70`}
+          className={`text-purple-500 text-sm font-medium leading-none`}
         >
           Add new category
         </Link>

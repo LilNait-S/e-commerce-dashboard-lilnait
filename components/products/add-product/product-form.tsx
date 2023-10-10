@@ -21,7 +21,6 @@ import { useRouter } from 'next/navigation'
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
 import { type ProductDetails } from '../types'
 import { useState } from 'react'
-import Link from 'next/link'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
@@ -112,10 +111,12 @@ const ProductForm = ({ type, product }: Props) => {
           {type === 'create' ? 'Add a new Product' : 'Edit Product'}
         </h1>
         <div className='space-x-3'>
-          <Button type='button' variant='outline'>
-            Save draft
-          </Button>
-          <Button type='submit'>
+          <Button
+            type='button'
+            onClick={() => {
+              form.handleSubmit(onSubmit)
+            }}
+          >
             {isSubmitting
               ? `${type === 'create' ? 'Publishing' : 'Editing'}`
               : `${type === 'create' ? 'Publish' : 'Edit'}`}

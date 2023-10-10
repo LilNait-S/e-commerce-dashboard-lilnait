@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const ProductSizes = ( {form }: { form: any }) => {
+const ProductSizes = ({ form }: { form: any }) => {
   return (
     <Select>
       <SelectTrigger>
@@ -16,12 +16,11 @@ const ProductSizes = ( {form }: { form: any }) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value='apple'>Apple</SelectItem>
-          <SelectItem value='banana'>Banana</SelectItem>
-          <SelectItem value='blueberry'>Blueberry</SelectItem>
-          <SelectItem value='grapes'>Grapes</SelectItem>
-          <SelectItem value='pineapple'>Pineapple</SelectItem>
+          <SelectLabel>Sizes</SelectLabel>
+          <SelectItem value='Small'>Small</SelectItem>
+          <SelectItem value='Medium'>Medium</SelectItem>
+          <SelectItem value='Large'>Large</SelectItem>
+          <SelectItem value='Gigant'>Gigant</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
