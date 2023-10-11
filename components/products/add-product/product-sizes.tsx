@@ -15,10 +15,10 @@ const ProductSizes = ({ form }: { form: any }) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value='Small'>Small</SelectItem>
-          <SelectItem value='Medium'>Medium</SelectItem>
-          <SelectItem value='Large'>Large</SelectItem>
-          <SelectItem value='Gigant'>Gigant</SelectItem>
+          <SelectItem value='1'>Pequeño</SelectItem>
+          <SelectItem value='2'>Mediano</SelectItem>
+          <SelectItem value='3'>Grande</SelectItem>
+          <SelectItem value='4'>Gigante</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

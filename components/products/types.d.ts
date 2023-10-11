@@ -22,3 +22,10 @@ export interface ProductForm {
   tags_id?: number | number[] 
   inventory_id?: string | string[]
 }
+
+
+export interface Sizes {
+  id: number
+  size: string
+  approx_size: string
+}

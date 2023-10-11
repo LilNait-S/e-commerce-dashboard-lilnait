@@ -18,9 +18,13 @@ import { Textarea } from '@/components/ui/textarea'
 
 import { productSchema } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
-import { createProduct, updateProduct } from '@/lib/actions/product.actions'
-import { type ProductDetails } from '../types'
-import { useState } from 'react'
+import {
+  createProduct,
+  fetchSizes,
+  updateProduct,
+} from '@/lib/actions/product.actions'
+import { type Sizes, type ProductDetails } from '../types'
+import { useEffect, useState } from 'react'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
@@ -87,10 +91,11 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
-        await createProduct({
-          values,
-        })
-        router.push('/products/product-list')
+        console.log('values', values)
+        // await createProduct({
+        //   values,
+        // })
+        // router.push('/products/product-list')
       }
       if (type === 'edit') {
         await updateProduct({ values, productId: product?.id as string })
@@ -122,32 +127,35 @@ const ProductForm = ({ type, product }: Props) => {
     }
   }
 
- 
+  // const [size, setsize] = useState<Sizes[]>([])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { sizes } = await fetchSizes()
+  //     setsize(sizes || [])
+  //   }
+  //   fetchData()
+  // }, [])
+
+  // console.log('size', size)
 
   return (
-    <>
-      <header className='flex justify-between items-center mb-4'>
-        <h1 className='title-product'>
-          {type === 'create' ? 'Add a new Product' : 'Edit Product'}
-        </h1>
-        <div className='space-x-3'>
-          <Button
-            type='button'
-            onClick={() => {
-              form.handleSubmit(onSubmit)
-            }}
-          >
-            {isSubmitting
-              ? `${type === 'create' ? 'Publishing' : 'Editing'}`
-              : `${type === 'create' ? 'Publish' : 'Edit'}`}
-          </Button>
-        </div>
-      </header>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='flex flex-wrap gap-6'
-        >
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <header className='flex w-full justify-between items-center mb-4'>
+          <h1 className='title-product'>
+            {type === 'create' ? 'Add a new Product' : 'Edit Product'}
+          </h1>
+          <div className='space-x-3'>
+            <Button type='submit'>
+              {isSubmitting
+                ? `${type === 'create' ? 'Publishing' : 'Editing'}`
+                : `${type === 'create' ? 'Publish' : 'Edit'}`}
+            </Button>
+          </div>
+        </header>
+
+        <div className='flex flex-wrap gap-6'>
           <section className='border border-border p-6 rounded-md space-y-6 flex-1'>
             <h2 className='sub-title-product'>Information</h2>
             <FormField
@@ -275,9 +283,9 @@ const ProductForm = ({ type, product }: Props) => {
               </Button>
             )}
           </section>
-        </form>
-      </Form>
-    </>
+        </div>
+      </form>
+    </Form>
   )
 }
 

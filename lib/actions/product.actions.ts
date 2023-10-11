@@ -145,3 +145,17 @@ export const fetchCategorys = async () => {
   return { categorys }
 }
 
+export const fetchSizes = async () => {
+  const { data: sizes, error } = await supabase
+    .from('sizes')
+    .select('id, size, approx_size')
+
+  if (error) {
+    throw new Error('sizes not found')
+  }
+  if (!sizes) {
+    throw new Error('sizes not found')
+  }
+
+  return { sizes }
+}

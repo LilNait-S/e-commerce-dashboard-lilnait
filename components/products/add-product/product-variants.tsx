@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch'
 import ProductSizes from './product-sizes'
 import { Input } from '@/components/ui/input'
 import ProductDelete from './product-delete'
+import { type Sizes } from '../types'
 
 const ProductVariants = ({
   form,
@@ -17,12 +18,14 @@ const ProductVariants = ({
   id,
   minVariables,
   variables,
+  size,
 }: {
   form: any
   deleteVariable: (id: string) => void
   id: string
   minVariables: number
   variables: string[]
+  size: Sizes
 }) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
