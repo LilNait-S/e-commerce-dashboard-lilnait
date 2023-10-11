@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -14,8 +13,7 @@ import { useEffect, useState } from 'react'
 
 interface Category {
   id: number
-  category: string
-  created_at: string
+  category_name: string
 }
 
 const ProductCategory = () => {
@@ -48,9 +46,9 @@ const ProductCategory = () => {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Categories</SelectLabel>
-            {category?.map(({ category, id }) => (
-              <SelectItem key={id} value={category}>
-                {category}
+            {category?.map(({ category_name, id }) => (
+              <SelectItem key={id} value={category_name}>
+                {category_name}
               </SelectItem>
             ))}
           </SelectGroup>

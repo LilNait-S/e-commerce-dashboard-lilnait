@@ -1,20 +1,20 @@
 import { Button } from '@/components/ui/button'
-import { deleteProduct } from '@/lib/actions/product.actions'
 import { TrashIcon } from '@radix-ui/react-icons'
-import { useRouter } from 'next/navigation'
 
-const ProductDelete = ({ id }: { id: string }) => {
-  const router = useRouter()
-  const handleDelete = ({ id }: { id: string }) => {
-    deleteProduct({ id })
-    router.refresh()
-  }
+const ProductDelete = ({
+  deleteVariable,
+  id,
+}: {
+  id: string
+  deleteVariable: (id: string) => void
+}) => {
   return (
     <Button
+      type='button'
       variant='ghost'
       className='h-8 w-8 p-[6px]'
       onClick={() => {
-        handleDelete({ id })
+        deleteVariable(id)
       }}
     >
       <span className='sr-only'>Delete product</span>

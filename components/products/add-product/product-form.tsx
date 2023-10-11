@@ -25,6 +25,7 @@ import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
 import ProductVariants from './product-variants'
+import { Plus } from 'lucide-react'
 
 interface Props {
   type: string
@@ -103,6 +104,25 @@ const ProductForm = ({ type, product }: Props) => {
 
     router.refresh()
   }
+
+  const [variables, setVariables] = useState<string[]>([crypto.randomUUID()])
+  const maxVariables = 4
+  const minVariables = 1
+
+  const addVariable = () => {
+    if (variables.length < maxVariables) {
+      setVariables([...variables, crypto.randomUUID()])
+    }
+  }
+  const deleteVariable = (id: string) => {
+    if (variables.length > minVariables) {
+      const indexToDelete = variables.findIndex((item) => item === id)
+      variables.splice(indexToDelete, 1)
+      router.refresh()
+    }
+  }
+
+ 
 
   return (
     <>
@@ -232,8 +252,28 @@ const ProductForm = ({ type, product }: Props) => {
             <ProductTag />
           </section>
 
-          <section className='flex-1 min-w-[280px]'>
-            <ProductVariants form={form} />
+          <section className='flex-1 flex flex-col min-w-[280px] gap-6 items-center'>
+            {variables.map((id) => (
+              <ProductVariants
+                key={id}
+                form={form}
+                deleteVariable={deleteVariable}
+                id={id}
+                variables={variables}
+                minVariables={minVariables}
+              />
+            ))}
+
+            {variables.length < maxVariables && (
+              <Button
+                type='button'
+                variant='outline'
+                size='icon'
+                onClick={addVariable}
+              >
+                <Plus />
+              </Button>
+            )}
           </section>
         </form>
       </Form>

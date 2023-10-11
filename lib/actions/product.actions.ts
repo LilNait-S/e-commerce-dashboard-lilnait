@@ -144,3 +144,4 @@ export const fetchCategorys = async () => {
 
   return { categorys }
 }
+

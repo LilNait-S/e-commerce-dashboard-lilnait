@@ -13,11 +13,11 @@ export const productSchema = z.object({
     .max(20)
     .optional(),
   description: z.string().max(2000, { message: 'Maximum 2000 characters' }),
-  media: z.union([z.string(), z.array(z.string())]),
-  categorys_id: z.union([z.number(), z.undefined()]).optional(),
+  images: z.union([z.string(), z.array(z.string())]),
+  categorys_id: z.number(),
   tags_id: z
     .union([z.number(), z.array(z.number()), z.undefined()])
     .default([])
     .optional(),
-  // inventory_id: z.array(z.string()),
+  variants_id: z.string(),
 })

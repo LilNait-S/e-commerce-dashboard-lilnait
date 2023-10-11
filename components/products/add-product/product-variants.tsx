@@ -11,7 +11,19 @@ import ProductSizes from './product-sizes'
 import { Input } from '@/components/ui/input'
 import ProductDelete from './product-delete'
 
-const ProductVariants = ({ form }: { form: any }) => {
+const ProductVariants = ({
+  form,
+  deleteVariable,
+  id,
+  minVariables,
+  variables,
+}: {
+  form: any
+  deleteVariable: (id: string) => void
+  id: string
+  minVariables: number
+  variables: string[]
+}) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
       <header className='flex justify-between items-center'>
@@ -30,7 +42,9 @@ const ProductVariants = ({ form }: { form: any }) => {
             </FormItem>
           )}
         />
-        <ProductDelete />
+        {variables.length > minVariables && (
+          <ProductDelete deleteVariable={deleteVariable} id={id} />
+        )}
       </header>
       <main className='flex items-center gap-5'>
         <FormItem className='flex-1'>

@@ -3,7 +3,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
@@ -16,7 +15,6 @@ const ProductSizes = ({ form }: { form: any }) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Sizes</SelectLabel>
           <SelectItem value='Small'>Small</SelectItem>
           <SelectItem value='Medium'>Medium</SelectItem>
           <SelectItem value='Large'>Large</SelectItem>
