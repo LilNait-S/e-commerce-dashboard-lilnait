@@ -77,7 +77,7 @@ const ProductImage = ({ form }: any) => {
           <div className='flex items-center justify-center w-full py-2'>
             <FormLabel
               htmlFor='dropzone-file'
-              className='flex flex-col items-center justify-center w-full h-64 border-2 border-border border-dashed rounded-lg cursor-pointer bg-background hover:bg-neutral-100 dark:hover:bg-neutral-900'
+              className='flex flex-col items-center justify-center w-full h-64 border-2 border-border border-dashed rounded-lg cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-900'
             >
               <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                 <svg
