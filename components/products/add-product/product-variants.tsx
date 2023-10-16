@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import {
   FormControl,
   FormField,
@@ -7,10 +7,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Switch } from '@/components/ui/switch'
-import ProductSizes from './product-sizes'
 import { Input } from '@/components/ui/input'
+import ProductSizes from './product-sizes'
 import ProductDelete from './product-delete'
-import { type Sizes } from '../types'
 
 const ProductVariants = ({
   form,
@@ -18,14 +17,12 @@ const ProductVariants = ({
   id,
   minVariables,
   variables,
-  size,
 }: {
   form: any
   deleteVariable: (id: string) => void
   id: string
   minVariables: number
   variables: string[]
-  size: Sizes
 }) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>

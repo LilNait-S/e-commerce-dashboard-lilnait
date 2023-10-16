@@ -20,11 +20,10 @@ import { productSchema } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
 import {
   createProduct,
-  fetchSizes,
   updateProduct,
 } from '@/lib/actions/product.actions'
-import { type Sizes, type ProductDetails } from '../types'
-import { useEffect, useState } from 'react'
+import { type ProductDetails } from '../types'
+import { useState } from 'react'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
@@ -47,10 +46,10 @@ const ProductForm = ({ type, product }: Props) => {
       slug: product?.slug ?? '',
       referential_code: product?.referential_code ?? '',
       description: product?.description ?? '',
-      media: product?.media ?? '',
+      media: product?.images ?? [],
       categorys_id: product?.categorys_id ?? undefined,
       tags_id: product?.tags_id ?? undefined,
-      inventory_id: product?.inventory_id ?? '',
+      inventory_id: product?.variants_id ?? '',
     },
   })
 
@@ -92,9 +91,9 @@ const ProductForm = ({ type, product }: Props) => {
     try {
       if (type === 'create') {
         console.log('values', values)
-        // await createProduct({
-        //   values,
-        // })
+        await createProduct({
+          values,
+        })
         // router.push('/products/product-list')
       }
       if (type === 'edit') {
@@ -127,17 +126,7 @@ const ProductForm = ({ type, product }: Props) => {
     }
   }
 
-  // const [size, setsize] = useState<Sizes[]>([])
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const { sizes } = await fetchSizes()
-  //     setsize(sizes || [])
-  //   }
-  //   fetchData()
-  // }, [])
-
-  // console.log('size', size)
+ 
 
   return (
     <Form {...form}>
@@ -214,46 +203,7 @@ const ProductForm = ({ type, product }: Props) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
-            control={form.control}
-            name='media'
-            render={({ field }) => (
-              <FormItem className='flex items-center gap-4'>
-                <FormLabel className='account-form_image-label'>
-                  {field.value ? (
-                    <img
-                      src={field.value}
-                      alt='profile photo'
-                      width={96}
-                      height={96}
-                      className='rounded-full object-contain'
-                    />
-                  ) : (
-                    <img
-                      src='/assets/profile.svg'
-                      alt='profile photo'
-                      width={96}
-                      height={96}
-                      className='object-contain'
-                    />
-                  )}
-                </FormLabel>
-                <FormControl className='flex-1 text-base-semibold text-gray-200'>
-                  <Input
-                    type='file'
-                    accept='image/*'
-                    placeholder='Upload a photo'
-                    className='account-form_image-input'
-                    onChange={(e) => {
-                      handleImage(e, field.onChange)
-                    }}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+          
 
             <ProductImage form={form} />
             <ProductCategory />

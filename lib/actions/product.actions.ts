@@ -9,9 +9,15 @@ import {
   type ProductForm,
 } from '@/components/products/types'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 interface Params {
   values: ProductForm
 }
+
+const serverUrl = isProduction
+  ? process.env.NEXT_PUBLIC_SERVER_URL
+  : 'http://localhost:3000'
 
 export const fetchProducts = async ({
   supabaseServer,
@@ -55,14 +61,30 @@ export const getProductDetails = async ({
   return { product }
 }
 
+export const uploadImage = async (imagePath: string[]) => {
+
+  try {
+    const response = await fetch(`${serverUrl}/api/upload`, {
+      method: 'POST',
+      body: JSON.stringify({ paths: imagePath }),
+    })
+
+    return await response.json()
+  } catch (e) {
+    console.error('Error on uploadImage:', e)
+    throw e
+  }
+}
+
 export const createProduct = async ({ values }: Params) => {
+  const imagesURL = await uploadImage(values.images)
   try {
     const {
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
 
-    const content = { ...values, user_id: user.id }
+    const content = { ...values, user_id: user.id, images: imagesURL }
 
     const { error } = await supabase.from('products').insert([content])
 
@@ -143,19 +165,4 @@ export const fetchCategorys = async () => {
   }
 
   return { categorys }
-}
-
-export const fetchSizes = async () => {
-  const { data: sizes, error } = await supabase
-    .from('sizes')
-    .select('id, size, approx_size')
-
-  if (error) {
-    throw new Error('sizes not found')
-  }
-  if (!sizes) {
-    throw new Error('sizes not found')
-  }
-
-  return { sizes }
 }

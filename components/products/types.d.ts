@@ -3,12 +3,12 @@ export interface ProductDetails {
   user_id: string
   name: string
   slug: string
-  referential_code: string | null
+  referential_code?: string | null
   description: string
   categorys_id: number
   created_at: string
-  inventory_id?: string
-  media: string
+  variants_id?: string
+  images: string[]
   tags_id: number
 }
 
@@ -17,12 +17,11 @@ export interface ProductForm {
   slug: string
   referential_code?: string | null
   description: string
-  media: string | string[]
+  images: string[]
   categorys_id?: number
-  tags_id?: number | number[] 
-  inventory_id?: string | string[]
+  tags_id?: number | number[]
+  variants_id?: string | string[]
 }
-
 
 export interface Sizes {
   id: number

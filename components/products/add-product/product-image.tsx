@@ -3,6 +3,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
 import { errorNotify } from '@/lib/common/notifys'
 import { useState } from 'react'
@@ -18,13 +19,18 @@ interface FileObject {
 const ProductImage = ({ form }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObject[]>([])
   const maxSizeInBytes = 5 * 1024 * 1024 // 5MB
-  const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChangeImages = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string[]) => void
+  ) => {
     e.preventDefault()
     const files = e.target.files
     if (!files || files.length === 0) return
 
     const imagePromises = []
     let id = 1
+    const testimg: string[] = []
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
@@ -42,22 +48,28 @@ const ProductImage = ({ form }: any) => {
         continue
       }
 
-      const reader = new FileReader()
+      const fileReader = new FileReader()
 
       const imagePromise = new Promise((resolve) => {
-        reader.onload = () => {
-          const result = reader.result as string
+        fileReader.onload = () => {
+          const result = fileReader.result as string
           resolve({ id: id++, name: file.name, preview: result })
+          testimg.push(result)
         }
       })
 
-      reader.readAsDataURL(file)
+      fileReader.readAsDataURL(file)
       imagePromises.push(imagePromise)
     }
 
-    Promise.all(imagePromises).then((results) => {
-      setImagePreviews(results as FileObject[])
-    })
+    Promise.all(imagePromises)
+      .then((results) => {
+        setImagePreviews(results as FileObject[])
+        fieldChange(testimg)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const handleRemoveImage = (imageName: string) => {
@@ -70,7 +82,7 @@ const ProductImage = ({ form }: any) => {
   return (
     <FormField
       control={form.control}
-      name='media'
+      name='images'
       render={({ field }) => (
         <FormItem>
           <FormLabel>Media</FormLabel>
@@ -110,9 +122,12 @@ const ProductImage = ({ form }: any) => {
                   accept='image/jpg, image/jpeg, image/png, image/avif, image/webp'
                   multiple
                   className='hidden'
-                  onChange={handleChangeImages}
+                  onChange={(e) => {
+                    handleChangeImages(e, field.onChange)
+                  }}
                 />
               </FormControl>
+              <FormMessage />
             </FormLabel>
           </div>
 
