@@ -9,11 +9,9 @@ export const productSchema = z.object({
     .regex(/^[a-z0-9-]+$/),
   referential_code: z.string().max(20).optional(),
   description: z.string().max(2000, { message: 'Maximum 2000 characters' }),
-  images: z
-    .array(z.string())
-    .refine((value) => value.length > 0, {
-      message: "Minimun 1 image",
-    }),
+  images: z.string().array().nonempty({
+    message: "Can't be empty!",
+  }),
   // categorys_id: z.number(),
   // tags_id: z
   //   .union([z.number(), z.array(z.number()), z.undefined()])

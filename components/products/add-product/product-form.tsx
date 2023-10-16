@@ -18,17 +18,15 @@ import { Textarea } from '@/components/ui/textarea'
 
 import { productSchema } from '@/lib/validations/product'
 import { useRouter } from 'next/navigation'
-import {
-  createProduct,
-  updateProduct,
-} from '@/lib/actions/product.actions'
+import { createProduct, updateProduct } from '@/lib/actions/product.actions'
 import { type ProductDetails } from '../types'
 import { useState } from 'react'
 import ProductCategory from './product-category'
 import ProductTag from './product-tag'
 import ProductImage from './product-image'
 import ProductVariants from './product-variants'
-import { Plus } from 'lucide-react'
+import { Plus, RefreshCcw } from 'lucide-react'
+import { textToSlug } from '@/lib/common/utils'
 
 interface Props {
   type: string
@@ -37,7 +35,7 @@ interface Props {
 
 const ProductForm = ({ type, product }: Props) => {
   const router = useRouter()
-  const [files, setFiles] = useState<File[]>([])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm({
     resolver: zodResolver(productSchema),
@@ -46,45 +44,12 @@ const ProductForm = ({ type, product }: Props) => {
       slug: product?.slug ?? '',
       referential_code: product?.referential_code ?? '',
       description: product?.description ?? '',
-      media: product?.images ?? [],
+      images: product?.images ?? [],
       categorys_id: product?.categorys_id ?? undefined,
       tags_id: product?.tags_id ?? undefined,
-      inventory_id: product?.variants_id ?? '',
+      variants_id: product?.variants_id ?? '',
     },
   })
-
-  const handleImage = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string) => void
-  ) => {
-    e.preventDefault()
-
-    // Crea una nueva instancia de FileReader para leer el archivo seleccionado.
-    const fileReader = new FileReader()
-
-    // Verifica si se seleccionaron archivos.
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]
-
-      // Actualiza el estado con los archivos seleccionados.
-      setFiles(Array.from(e.target.files))
-
-      // Verifica si el archivo seleccionado es una imagen.
-      if (!file.type.includes('image')) return
-
-      // Define un manejador de eventos para cuando el FileReader termine de cargar el archivo.
-      fileReader.onload = async (e) => {
-        // Recupera la URL de Datos que representa la imagen.
-        const imageDataUrl = e.target?.result?.toString() ?? ''
-
-        // Llama a la función de devolución de llamada proporcionada para actualizar el campo con la URL de Datos de la imagen.
-        fieldChange(imageDataUrl)
-      }
-
-      // Lee el archivo seleccionado como una URL de Datos.
-      fileReader.readAsDataURL(file)
-    }
-  }
 
   const onSubmit = async (values: z.infer<typeof productSchema>) => {
     setIsSubmitting(true)
@@ -125,8 +90,17 @@ const ProductForm = ({ type, product }: Props) => {
       router.refresh()
     }
   }
+  const [nameValue, setNameValue] = useState('')
+  const [slugValue, setSlugValue] = useState('')
 
- 
+  const handleName = (text: string) => {
+    setNameValue(text)
+  }
+
+  const handleSlug = () => {
+    const newSlug = textToSlug(nameValue)
+    setSlugValue(newSlug)
+  }
 
   return (
     <Form {...form}>
@@ -154,7 +128,15 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='Product title' {...field} type='text' />
+                    <Input
+                      placeholder='Product title'
+                      {...field}
+                      type='text'
+                      value={nameValue}
+                      onChange={(e) => {
+                        handleName(e.target.value)
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -164,11 +146,22 @@ const ProductForm = ({ type, product }: Props) => {
               control={form.control}
               name='slug'
               render={({ field }) => (
-                <FormItem>
+                <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input {...field} type='text' />
+                    <Input {...field} type='text' value={slugValue} />
                   </FormControl>
+                  <Button
+                    type='button'
+                    size='icon'
+                    variant='ghost'
+                    className='absolute right-0 top-6'
+                    onClick={() => {
+                      handleSlug()
+                    }}
+                  >
+                    <RefreshCcw className='h-5 w-5' />
+                  </Button>
                   <FormMessage />
                 </FormItem>
               )}
@@ -203,7 +196,6 @@ const ProductForm = ({ type, product }: Props) => {
                 </FormItem>
               )}
             />
-          
 
             <ProductImage form={form} />
             <ProductCategory />

@@ -77,14 +77,15 @@ export const uploadImage = async (imagePath: string[]) => {
 }
 
 export const createProduct = async ({ values }: Params) => {
-  const imagesURL = await uploadImage(values.images)
+  // const imagesURL = await uploadImage(values.images)
   try {
     const {
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
 
-    const content = { ...values, user_id: user.id, images: imagesURL }
+    // const content = { ...values, user_id: user.id, images: imagesURL }
+    const content = { ...values, user_id: user.id }
 
     const { error } = await supabase.from('products').insert([content])
 
