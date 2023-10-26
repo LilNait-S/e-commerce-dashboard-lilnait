@@ -90,16 +90,11 @@ const ProductForm = ({ type, product }: Props) => {
       router.refresh()
     }
   }
-  const [nameValue, setNameValue] = useState('')
-  const [slugValue, setSlugValue] = useState('')
-
-  const handleName = (text: string) => {
-    setNameValue(text)
-  }
 
   const handleSlug = () => {
-    const newSlug = textToSlug(nameValue)
-    setSlugValue(newSlug)
+    const name = form.watch('name')
+    const slug = textToSlug(name)
+    form.setValue('slug', slug)
   }
 
   return (
@@ -124,6 +119,7 @@ const ProductForm = ({ type, product }: Props) => {
             <FormField
               control={form.control}
               name='name'
+              defaultValue=''
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -137,6 +133,7 @@ const ProductForm = ({ type, product }: Props) => {
             <FormField
               control={form.control}
               name='slug'
+              defaultValue=''
               render={({ field }) => (
                 <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
