@@ -56,9 +56,9 @@ const ProductForm = ({ type, product }: Props) => {
     try {
       if (type === 'create') {
         console.log('values', values)
-        await createProduct({
-          values,
-        })
+        // await createProduct({
+        //   values,
+        // })
         // router.push('/products/product-list')
       }
       if (type === 'edit') {
@@ -128,15 +128,7 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder='Product title'
-                      {...field}
-                      type='text'
-                      value={nameValue}
-                      onChange={(e) => {
-                        handleName(e.target.value)
-                      }}
-                    />
+                    <Input placeholder='Product title' {...field} type='text' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,7 +141,7 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input {...field} type='text' value={slugValue} />
+                    <Input {...field} type='text' />
                   </FormControl>
                   <Button
                     type='button'

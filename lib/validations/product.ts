@@ -10,7 +10,7 @@ export const productSchema = z.object({
   referential_code: z.string().max(20).optional(),
   description: z.string().max(2000, { message: 'Maximum 2000 characters' }),
   images: z.string().array().nonempty({
-    message: "Can't be empty!",
+    message: "Minimum 1 image",
   }),
   // categorys_id: z.number(),
   // tags_id: z

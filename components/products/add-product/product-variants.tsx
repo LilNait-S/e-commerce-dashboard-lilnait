@@ -1,4 +1,3 @@
-
 import {
   FormControl,
   FormField,
@@ -29,7 +28,8 @@ const ProductVariants = ({
       <header className='flex justify-between items-center'>
         <FormField
           control={form.control}
-          name='in_stock'
+          defaultValue={true}
+          name={`in_stock ${id}`}
           render={({ field }) => (
             <FormItem className='flex flex-row'>
               <FormControl>
