@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const ProductSizes = ({ form }: { form: any }) => {
+const ProductSizes = ({ formControl }: any) => {
   return (
     <Select>
       <SelectTrigger>

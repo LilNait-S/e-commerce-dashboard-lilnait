@@ -5,11 +5,9 @@ export interface ProductDetails {
   slug: string
   referential_code?: string | null
   description: string
-  categorys_id: number
+  categorys_id: string
   created_at: string
-  variants_id?: string
   images: string[]
-  tags_id: number
 }
 
 export interface ProductForm {
@@ -18,9 +16,7 @@ export interface ProductForm {
   referential_code?: string | null
   description: string
   images: string[]
-  categorys_id?: number
-  tags_id?: number | number[]
-  variants_id?: string | string[]
+  categorys_id: string
 }
 
 export interface Sizes {

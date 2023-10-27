@@ -16,9 +16,9 @@ interface FileObject {
   name: string
 }
 
-const ProductImage = ({ form }: any) => {
+const ProductImage = ({ formControl }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObject[]>([])
-  const maxSizeInBytes = 5 * 1024 * 1024 // 5MB
+  const maxSizeInBytes = 5 * 1024 * 1024 // 5MB max
 
   const handleChangeImages = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -30,7 +30,7 @@ const ProductImage = ({ form }: any) => {
 
     const imagePromises = []
     let id = 1
-    const testimg: string[] = []
+    const urlImages: string[] = []
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
@@ -54,7 +54,7 @@ const ProductImage = ({ form }: any) => {
         fileReader.onload = () => {
           const result = fileReader.result as string
           resolve({ id: id++, name: file.name, preview: result })
-          testimg.push(result)
+          urlImages.push(result)
         }
       })
 
@@ -65,7 +65,7 @@ const ProductImage = ({ form }: any) => {
     Promise.all(imagePromises)
       .then((results) => {
         setImagePreviews(results as FileObject[])
-        fieldChange(testimg)
+        fieldChange(urlImages)
       })
       .catch((err) => {
         console.log(err)
@@ -81,7 +81,7 @@ const ProductImage = ({ form }: any) => {
 
   return (
     <FormField
-      control={form.control}
+      control={formControl}
       name='images'
       render={({ field }) => (
         <FormItem>

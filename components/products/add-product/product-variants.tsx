@@ -11,13 +11,13 @@ import ProductSizes from './product-sizes'
 import ProductDelete from './product-delete'
 
 const ProductVariants = ({
-  form,
+  formControl,
   deleteVariable,
   id,
   minVariables,
   variables,
 }: {
-  form: any
+  formControl: any
   deleteVariable: (id: string) => void
   id: string
   minVariables: number
@@ -27,7 +27,7 @@ const ProductVariants = ({
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
       <header className='flex justify-between items-center'>
         <FormField
-          control={form.control}
+          control={formControl}
           defaultValue={true}
           name={`in_stock ${id}`}
           render={({ field }) => (
@@ -49,11 +49,11 @@ const ProductVariants = ({
       <main className='flex items-center gap-5'>
         <FormItem className='flex-1'>
           <FormLabel>Size</FormLabel>
-          <ProductSizes form={form} />
+          <ProductSizes formControl={formControl} />
         </FormItem>
 
         <FormField
-          control={form.control}
+          control={formControl}
           name='price'
           render={({ field }) => (
             <FormItem className='flex-1'>
@@ -70,7 +70,7 @@ const ProductVariants = ({
       <h2 className='sub-title-product'>Optional</h2>
       <div className='flex items-center gap-5'>
         <FormField
-          control={form.control}
+          control={formControl}
           name='available_quantity'
           render={({ field }) => (
             <FormItem className='flex-1'>
@@ -84,7 +84,7 @@ const ProductVariants = ({
         />
 
         <FormField
-          control={form.control}
+          control={formControl}
           name='offer_price'
           render={({ field }) => (
             <FormItem className='flex-1'>

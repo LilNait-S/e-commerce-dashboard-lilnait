@@ -1,4 +1,11 @@
 import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import {
   Select,
   SelectContent,
   SelectGroup,
@@ -16,7 +23,7 @@ interface Category {
   category_name: string
 }
 
-const ProductCategory = () => {
+const ProductCategory = ({ formControl }: any) => {
   const [category, setCategory] = useState<Category[]>([])
 
   useEffect(() => {
@@ -27,33 +34,48 @@ const ProductCategory = () => {
     fetchData()
   }, [])
 
+  console.log('category', category)
+
   return (
     <section>
       <h2 className='sub-title-product'>Organize</h2>
-      <div className='flex justify-between mb-3'>
-        <h3 className='text-sm font-medium leading-none'>Category</h3>
-        <Link
-          href='/'
-          className={`text-purple-500 text-sm font-medium leading-none`}
-        >
-          Add new category
-        </Link>
-      </div>
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder='Select a category' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Categories</SelectLabel>
-            {category?.map(({ category_name, id }) => (
-              <SelectItem key={id} value={category_name}>
-                {category_name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <FormField
+        control={formControl}
+        name='categorys_id'
+        render={({ field }) => (
+          <FormItem>
+            <div className='flex justify-between mb-3'>
+              <FormLabel>Category</FormLabel>
+              <Link
+                href='/'
+                className={`text-purple-500 text-sm font-medium leading-none`}
+              >
+                Add new category
+              </Link>
+            </div>
+
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select a category' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {category?.map(({ category_name, id }) => (
+                    <SelectItem key={id} value={id.toString()}>
+                      {category_name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </section>
   )
 }

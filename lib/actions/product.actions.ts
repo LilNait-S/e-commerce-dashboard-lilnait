@@ -156,7 +156,7 @@ export const updateProduct = async ({
 export const fetchCategorys = async () => {
   const { data: categorys, error } = await supabase
     .from('categorys')
-    .select('*')
+    .select('id, category_name')
 
   if (error) {
     throw new Error('Categorys not found')

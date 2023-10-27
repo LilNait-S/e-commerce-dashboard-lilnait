@@ -17,15 +17,16 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
 import { productSchema } from '@/lib/validations/product'
-import { useRouter } from 'next/navigation'
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
 import { type ProductDetails } from '../types'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+
 import ProductCategory from './product-category'
-import ProductTag from './product-tag'
 import ProductImage from './product-image'
-import ProductVariants from './product-variants'
-import { Plus, RefreshCcw } from 'lucide-react'
+import VariantContainer from './variant-container'
+
+import { RefreshCcw } from 'lucide-react'
 import { textToSlug } from '@/lib/common/utils'
 
 interface Props {
@@ -46,8 +47,11 @@ const ProductForm = ({ type, product }: Props) => {
       description: product?.description ?? '',
       images: product?.images ?? [],
       categorys_id: product?.categorys_id ?? undefined,
-      tags_id: product?.tags_id ?? undefined,
-      variants_id: product?.variants_id ?? '',
+
+      available_quantity: '',
+      sizes_id: '',
+      price_product_id: '',
+      in_stock: true,
     },
   })
 
@@ -72,23 +76,6 @@ const ProductForm = ({ type, product }: Props) => {
     }
 
     router.refresh()
-  }
-
-  const [variables, setVariables] = useState<string[]>([crypto.randomUUID()])
-  const maxVariables = 4
-  const minVariables = 1
-
-  const addVariable = () => {
-    if (variables.length < maxVariables) {
-      setVariables([...variables, crypto.randomUUID()])
-    }
-  }
-  const deleteVariable = (id: string) => {
-    if (variables.length > minVariables) {
-      const indexToDelete = variables.findIndex((item) => item === id)
-      variables.splice(indexToDelete, 1)
-      router.refresh()
-    }
   }
 
   const handleSlug = () => {
@@ -119,7 +106,6 @@ const ProductForm = ({ type, product }: Props) => {
             <FormField
               control={form.control}
               name='name'
-              defaultValue=''
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -133,7 +119,6 @@ const ProductForm = ({ type, product }: Props) => {
             <FormField
               control={form.control}
               name='slug'
-              defaultValue=''
               render={({ field }) => (
                 <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
@@ -145,9 +130,7 @@ const ProductForm = ({ type, product }: Props) => {
                     size='icon'
                     variant='ghost'
                     className='absolute right-0 top-6'
-                    onClick={() => {
-                      handleSlug()
-                    }}
+                    onClick={handleSlug}
                   >
                     <RefreshCcw className='h-5 w-5' />
                   </Button>
@@ -186,34 +169,11 @@ const ProductForm = ({ type, product }: Props) => {
               )}
             />
 
-            <ProductImage form={form} />
-            <ProductCategory />
-            <ProductTag />
+            <ProductImage formControl={form.control} />
+            <ProductCategory formControl={form.control} />
           </section>
 
-          <section className='flex-1 flex flex-col min-w-[280px] gap-6 items-center'>
-            {variables.map((id) => (
-              <ProductVariants
-                key={id}
-                form={form}
-                deleteVariable={deleteVariable}
-                id={id}
-                variables={variables}
-                minVariables={minVariables}
-              />
-            ))}
-
-            {variables.length < maxVariables && (
-              <Button
-                type='button'
-                variant='outline'
-                size='icon'
-                onClick={addVariable}
-              >
-                <Plus />
-              </Button>
-            )}
-          </section>
+          <VariantContainer />
         </div>
       </form>
     </Form>
