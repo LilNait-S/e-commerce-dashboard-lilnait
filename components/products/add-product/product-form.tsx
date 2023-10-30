@@ -48,10 +48,15 @@ const ProductForm = ({ type, product }: Props) => {
       images: product?.images ?? [],
       categorys_id: product?.categorys_id ?? undefined,
 
-      available_quantity: '',
-      sizes_id: '',
-      price_product_id: '',
-      in_stock: true,
+      variables: [
+        {
+          in_stock: true,
+          size_id: '',
+          price_product: 0,
+          available_quantity: 0,
+          offer_price: 0,
+        },
+      ],
     },
   })
 
@@ -63,6 +68,7 @@ const ProductForm = ({ type, product }: Props) => {
         // await createProduct({
         //   values,
         // })
+
         // router.push('/products/product-list')
       }
       if (type === 'edit') {
@@ -83,6 +89,7 @@ const ProductForm = ({ type, product }: Props) => {
     const slug = textToSlug(name)
     form.setValue('slug', slug)
   }
+  
 
   return (
     <Form {...form}>
@@ -173,7 +180,7 @@ const ProductForm = ({ type, product }: Props) => {
             <ProductCategory formControl={form.control} />
           </section>
 
-          <VariantContainer />
+          <VariantContainer control={form.control} />
         </div>
       </form>
     </Form>

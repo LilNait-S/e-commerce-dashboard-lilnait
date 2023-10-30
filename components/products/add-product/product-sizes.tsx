@@ -1,27 +1,53 @@
 import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { sizesVariant } from '@/constants/products'
 
-const ProductSizes = ({ formControl }: any) => {
+const ProductSizes = ({ control, index }: any) => {
   return (
-    <Select>
-      <SelectTrigger>
-        <SelectValue placeholder='Select a size' />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectItem value='1'>Pequeño</SelectItem>
-          <SelectItem value='2'>Mediano</SelectItem>
-          <SelectItem value='3'>Grande</SelectItem>
-          <SelectItem value='4'>Gigante</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <div className='flex-1'>
+      <FormField
+        control={control}
+        name={`variables.${index}.size_id`}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Size</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select a category' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Sizes</SelectLabel>
+                  {sizesVariant?.map(({ value, size }) => (
+                    <SelectItem key={value} value={value.toString()}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
   )
 }
 

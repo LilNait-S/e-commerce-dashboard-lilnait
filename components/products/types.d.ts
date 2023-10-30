@@ -7,7 +7,14 @@ export interface ProductDetails {
   description: string
   categorys_id: string
   created_at: string
-  images: string[]
+  images: [string, ...string[]]
+  variables: {
+    in_stock: boolean
+    size_id: string
+    price_product: number
+    available_quantity?: number
+    offer_price?: number
+  }[]
 }
 
 export interface ProductForm {
@@ -15,8 +22,15 @@ export interface ProductForm {
   slug: string
   referential_code?: string | null
   description: string
-  images: string[]
+  images: [string, ...string[]]
   categorys_id: string
+  variables: {
+    in_stock: boolean
+    size_id: string
+    price_product: number
+    available_quantity?: number
+    offer_price?: number
+  }[]
 }
 
 export interface Sizes {

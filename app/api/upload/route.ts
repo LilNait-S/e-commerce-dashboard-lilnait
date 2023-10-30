@@ -32,8 +32,6 @@ export async function POST(request: Request) {
       urlImages.push(result)
     }
 
-    console.log('urlImages', urlImages)
-
     return NextResponse.json(urlImages, { status: 200 })
   } catch (e) {
     return NextResponse.json({ message: e }, { status: 500 })

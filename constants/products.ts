@@ -9,6 +9,26 @@ export const categorys = [
   'Otros',
 ] as const
 
+
+export const sizesVariant = [
+  {
+    value: '1',
+    size: 'Pequeño',
+  },
+  {
+    value: '2',
+    size: 'Mediano',
+  },
+  {
+    value: '3',
+    size: 'Grande',
+  },
+  {
+    value: '4',
+    size: 'Gigante',
+  },
+]
+
 export const suggestions = [
   {
     title: 'Colors',

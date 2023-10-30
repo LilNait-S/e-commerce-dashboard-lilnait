@@ -1,50 +1,46 @@
-import { useState } from 'react'
+import { useFieldArray } from 'react-hook-form'
 import ProductVariants from './product-variants'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 const maxVariables = 4
 const minVariables = 1
 
-const VariantContainer = ({ formControl }: any) => {
+const VariantContainer = ({ control }: any) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'variables',
+  })
 
-  const [variables, setVariables] = useState<string[]>([crypto.randomUUID()])
-  const router = useRouter()
+  console.log('fields', fields)
 
-  const addVariable = () => {
-    if (variables.length < maxVariables) {
-      setVariables([...variables, crypto.randomUUID()])
+  const handleAppend = () => {
+    if (fields.length < maxVariables) {
+      append({
+        in_stock: true,
+      })
     }
   }
 
-  const deleteVariable = (id: string) => {
-    if (variables.length > minVariables) {
-      const indexToDelete = variables.findIndex((item) => item === id)
-      variables.splice(indexToDelete, 1)
-      router.refresh()
-    }
-  }
-  
   return (
     <section className='flex-1 flex flex-col min-w-[280px] gap-6 items-center'>
-      {variables.map((id) => (
+      {fields.map(({ id }, index) => (
         <ProductVariants
           key={id}
-          formControl={formControl}
-          deleteVariable={deleteVariable}
-          id={id}
-          variables={variables}
+          control={control}
+          index={index}
+          remove={remove}
+          variables={fields.length}
           minVariables={minVariables}
         />
       ))}
 
-      {variables.length < maxVariables && (
+      {fields.length < maxVariables && (
         <Button
           type='button'
           variant='outline'
           size='icon'
-          onClick={addVariable}
+          onClick={handleAppend}
         >
           <Plus />
         </Button>

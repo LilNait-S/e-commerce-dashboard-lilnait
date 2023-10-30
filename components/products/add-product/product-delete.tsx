@@ -2,11 +2,11 @@ import { Button } from '@/components/ui/button'
 import { TrashIcon } from '@radix-ui/react-icons'
 
 const ProductDelete = ({
-  deleteVariable,
-  id,
+  remove,
+  index,
 }: {
-  id: string
-  deleteVariable: (id: string) => void
+  index: number
+  remove: (index: number) => void
 }) => {
   return (
     <Button
@@ -14,7 +14,7 @@ const ProductDelete = ({
       variant='ghost'
       className='h-8 w-8 p-[6px]'
       onClick={() => {
-        deleteVariable(id)
+        remove(index)
       }}
     >
       <span className='sr-only'>Delete product</span>

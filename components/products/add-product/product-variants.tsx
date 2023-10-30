@@ -11,25 +11,25 @@ import ProductSizes from './product-sizes'
 import ProductDelete from './product-delete'
 
 const ProductVariants = ({
-  formControl,
-  deleteVariable,
-  id,
+  control,
+  remove,
+  index,
   minVariables,
   variables,
 }: {
-  formControl: any
-  deleteVariable: (id: string) => void
-  id: string
+  control: any
+  remove: (index: number) => void
+  index: number
   minVariables: number
-  variables: string[]
+  variables: any
 }) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
       <header className='flex justify-between items-center'>
         <FormField
-          control={formControl}
+          control={control}
           defaultValue={true}
-          name={`in_stock ${id}`}
+          name={`variables.${index}.in_stock`}
           render={({ field }) => (
             <FormItem className='flex flex-row'>
               <FormControl>
@@ -39,22 +39,19 @@ const ProductVariants = ({
                 />
               </FormControl>
               <FormLabel className='text-base !mt-0 ml-2'>In stock</FormLabel>
+              <FormMessage />
             </FormItem>
           )}
         />
-        {variables.length > minVariables && (
-          <ProductDelete deleteVariable={deleteVariable} id={id} />
+        {variables > minVariables && (
+          <ProductDelete remove={remove} index={index} />
         )}
       </header>
       <main className='flex items-center gap-5'>
-        <FormItem className='flex-1'>
-          <FormLabel>Size</FormLabel>
-          <ProductSizes formControl={formControl} />
-        </FormItem>
-
+        <ProductSizes control={control} index={index} />
         <FormField
-          control={formControl}
-          name='price'
+          control={control}
+          name={`variables.${index}.price_product`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Price</FormLabel>
@@ -70,8 +67,8 @@ const ProductVariants = ({
       <h2 className='sub-title-product'>Optional</h2>
       <div className='flex items-center gap-5'>
         <FormField
-          control={formControl}
-          name='available_quantity'
+          control={control}
+          name={`variables.${index}.available_quantity`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Available quantity</FormLabel>
@@ -84,8 +81,8 @@ const ProductVariants = ({
         />
 
         <FormField
-          control={formControl}
-          name='offer_price'
+          control={control}
+          name={`variables.${index}.offer_price`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Offer price</FormLabel>

@@ -34,8 +34,6 @@ const ProductCategory = ({ formControl }: any) => {
     fetchData()
   }, [])
 
-  console.log('category', category)
-
   return (
     <section>
       <h2 className='sub-title-product'>Organize</h2>

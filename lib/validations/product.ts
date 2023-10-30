@@ -1,5 +1,15 @@
 import * as z from 'zod'
 
+const variableSchema = z.object({
+  in_stock: z.boolean(),
+  size_id: z.string().nonempty({
+    message: 'Description is required',
+  }),
+  price_product: z.coerce.number().min(1, 'A price greater than 0 is required'),
+  available_quantity: z.coerce.number().optional(),
+  offer_price: z.coerce.number().optional(),
+})
+
 export const productSchema = z.object({
   name: z.string().min(2, { message: 'Minimum 2 characters' }),
   slug: z
@@ -16,9 +26,9 @@ export const productSchema = z.object({
     .nonempty({
       message: 'Description is required',
     }),
-  images: z.string().array().nonempty({
+  images: z.array(z.string()).nonempty({
     message: 'Minimum 1 image',
   }),
   categorys_id: z.string({ required_error: 'Category is required' }),
-  // variants_id: z.string(),
+  variables: z.array(variableSchema),
 })
