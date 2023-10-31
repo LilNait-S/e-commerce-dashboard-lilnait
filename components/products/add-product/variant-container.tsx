@@ -2,9 +2,7 @@ import { useFieldArray } from 'react-hook-form'
 import ProductVariants from './product-variants'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-
-const maxVariables = 4
-const minVariables = 1
+import { maxVariables } from '@/constants/products'
 
 const VariantContainer = ({ control }: any) => {
   const { fields, append, remove } = useFieldArray({
@@ -31,7 +29,6 @@ const VariantContainer = ({ control }: any) => {
           index={index}
           remove={remove}
           variables={fields.length}
-          minVariables={minVariables}
         />
       ))}
 

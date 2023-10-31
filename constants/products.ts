@@ -9,6 +9,9 @@ export const categorys = [
   'Otros',
 ] as const
 
+/* variant section  */
+export const maxVariables = 4
+export const minVariables = 1
 
 export const sizesVariant = [
   {
@@ -27,7 +30,7 @@ export const sizesVariant = [
     value: '4',
     size: 'Gigante',
   },
-]
+] as const
 
 export const suggestions = [
   {

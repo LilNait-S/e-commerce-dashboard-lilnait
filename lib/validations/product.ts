@@ -26,8 +26,8 @@ export const productSchema = z.object({
     .nonempty({
       message: 'Description is required',
     }),
-  images: z.array(z.string()).nonempty({
-    message: 'Minimum 1 image',
+  images: z.array(z.instanceof(File)).refine((images) => images.length >= 1, {
+    message: 'At least one image is required',
   }),
   categorys_id: z.string({ required_error: 'Category is required' }),
   variables: z.array(variableSchema),

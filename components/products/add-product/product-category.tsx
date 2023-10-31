@@ -23,7 +23,7 @@ interface Category {
   category_name: string
 }
 
-const ProductCategory = ({ formControl }: any) => {
+const ProductCategory = ({ control }: any) => {
   const [category, setCategory] = useState<Category[]>([])
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const ProductCategory = ({ formControl }: any) => {
     <section>
       <h2 className='sub-title-product'>Organize</h2>
       <FormField
-        control={formControl}
+        control={control}
         name='categorys_id'
         render={({ field }) => (
           <FormItem>

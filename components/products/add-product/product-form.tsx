@@ -46,7 +46,7 @@ const ProductForm = ({ type, product }: Props) => {
       referential_code: product?.referential_code ?? '',
       description: product?.description ?? '',
       images: product?.images ?? [],
-      categorys_id: product?.categorys_id ?? undefined,
+      categorys_id: product?.categorys_id ?? '',
 
       variables: [
         {
@@ -89,7 +89,6 @@ const ProductForm = ({ type, product }: Props) => {
     const slug = textToSlug(name)
     form.setValue('slug', slug)
   }
-  
 
   return (
     <Form {...form}>
@@ -176,8 +175,8 @@ const ProductForm = ({ type, product }: Props) => {
               )}
             />
 
-            <ProductImage formControl={form.control} />
-            <ProductCategory formControl={form.control} />
+            <ProductImage control={form.control} />
+            <ProductCategory control={form.control} />
           </section>
 
           <VariantContainer control={form.control} />

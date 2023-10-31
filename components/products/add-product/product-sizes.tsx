@@ -15,8 +15,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { sizesVariant } from '@/constants/products'
+import { type Control } from 'react-hook-form'
 
-const ProductSizes = ({ control, index }: any) => {
+const ProductSizes = ({
+  control,
+  index,
+}: {
+  control: Control
+  index: number
+}) => {
   return (
     <div className='flex-1'>
       <FormField
@@ -28,7 +35,7 @@ const ProductSizes = ({ control, index }: any) => {
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder='Select a category' />
+                  <SelectValue placeholder='Select a size' />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>

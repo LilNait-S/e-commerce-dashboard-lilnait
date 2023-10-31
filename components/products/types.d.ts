@@ -7,7 +7,7 @@ export interface ProductDetails {
   description: string
   categorys_id: string
   created_at: string
-  images: [string, ...string[]]
+  images: File[]
   variables: {
     in_stock: boolean
     size_id: string
@@ -22,7 +22,7 @@ export interface ProductForm {
   slug: string
   referential_code?: string | null
   description: string
-  images: [string, ...string[]]
+  images: File[]
   categorys_id: string
   variables: {
     in_stock: boolean

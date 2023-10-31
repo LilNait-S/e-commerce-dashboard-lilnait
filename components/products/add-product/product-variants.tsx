@@ -9,19 +9,19 @@ import { Switch } from '@/components/ui/switch'
 import { Input } from '@/components/ui/input'
 import ProductSizes from './product-sizes'
 import ProductDelete from './product-delete'
+import { minVariables } from '@/constants/products'
+import { type Control } from 'react-hook-form'
 
 const ProductVariants = ({
   control,
   remove,
   index,
-  minVariables,
   variables,
 }: {
-  control: any
+  control: Control
   remove: (index: number) => void
   index: number
-  minVariables: number
-  variables: any
+  variables: number
 }) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>

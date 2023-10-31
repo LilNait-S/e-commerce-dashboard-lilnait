@@ -16,7 +16,7 @@ interface FileObject {
   name: string
 }
 
-const ProductImage = ({ formControl }: any) => {
+const ProductImage = ({ control }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObject[]>([])
   const maxSizeInBytes = 5 * 1024 * 1024 // 5MB max
 
@@ -81,7 +81,7 @@ const ProductImage = ({ formControl }: any) => {
 
   return (
     <FormField
-      control={formControl}
+      control={control}
       name='images'
       render={({ field }) => (
         <FormItem>
