@@ -21,7 +21,7 @@ const ProductSizes = ({ control, index }: { control: any; index: number }) => {
     <div className='flex-1'>
       <FormField
         control={control}
-        name={`variables.${index}.size_id`}
+        name={`variants.${index}.sizes_id`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Size</FormLabel>

@@ -16,12 +16,12 @@ const ProductVariants = ({
   control,
   remove,
   index,
-  variables,
+  variants,
 }: {
   control: Control
   remove: (index: number) => void
   index: number
-  variables: number
+  variants: number
 }) => {
   return (
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
@@ -29,7 +29,7 @@ const ProductVariants = ({
         <FormField
           control={control}
           defaultValue={true}
-          name={`variables.${index}.in_stock`}
+          name={`variants.${index}.in_stock`}
           render={({ field }) => (
             <FormItem className='flex flex-row'>
               <FormControl>
@@ -43,7 +43,7 @@ const ProductVariants = ({
             </FormItem>
           )}
         />
-        {variables > minVariables && (
+        {variants > minVariables && (
           <ProductDelete remove={remove} index={index} />
         )}
       </header>
@@ -51,7 +51,7 @@ const ProductVariants = ({
         <ProductSizes control={control} index={index} />
         <FormField
           control={control}
-          name={`variables.${index}.price_product`}
+          name={`variants.${index}.price_size`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Price</FormLabel>
@@ -68,7 +68,7 @@ const ProductVariants = ({
       <div className='flex items-center gap-5'>
         <FormField
           control={control}
-          name={`variables.${index}.available_quantity`}
+          name={`variants.${index}.available_quantity`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Available quantity</FormLabel>
@@ -82,7 +82,7 @@ const ProductVariants = ({
 
         <FormField
           control={control}
-          name={`variables.${index}.offer_price`}
+          name={`variants.${index}.price_offer`}
           render={({ field }) => (
             <FormItem className='flex-1'>
               <FormLabel>Offer price</FormLabel>

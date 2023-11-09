@@ -48,13 +48,13 @@ const ProductForm = ({ type, product }: Props) => {
       images: product?.images ?? [],
       categorys_id: product?.categorys_id ?? '1',
 
-      variables: [
+      variants: [
         {
           in_stock: true,
-          size_id: '1',
-          price_product: 0,
+          sizes_id: '1',
+          price_size: 0,
           available_quantity: 0,
-          offer_price: 0,
+          price_offer: 0,
         },
       ],
     },
@@ -65,11 +65,12 @@ const ProductForm = ({ type, product }: Props) => {
     try {
       if (type === 'create') {
         console.log('values', values)
-        // await createProduct({
-        //   values,
-        // })
 
-        // router.push('/products/product-list')
+        await createProduct({
+          values,
+        })
+
+        router.push('/products/product-list')
       }
       if (type === 'edit') {
         await updateProduct({ values, productId: product?.id as string })
@@ -179,7 +180,7 @@ const ProductForm = ({ type, product }: Props) => {
             <ProductCategory control={form.control} />
           </section>
 
-          <VariantContainer control={form.control} setValue={form.setValue} />
+          <VariantContainer control={form.control} />
         </div>
       </form>
     </Form>

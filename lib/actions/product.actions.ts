@@ -61,35 +61,76 @@ export const getProductDetails = async ({
   return { product }
 }
 
-export const uploadImage = async (imagePath: string[]) => {
-
+export const uploadImage = async (imagePath: any[]) => {
   try {
+    const formData = new FormData()
+    for (let i = 0; i < imagePath.length; i++) {
+      formData.append('paths', imagePath[i].preview)
+    }
+
     const response = await fetch(`${serverUrl}/api/upload`, {
       method: 'POST',
-      body: JSON.stringify({ paths: imagePath }),
+      body: formData,
     })
 
     return await response.json()
   } catch (e) {
     console.error('Error on uploadImage:', e)
-    throw e
+    throw new Error('Error on uploadImage')
   }
 }
 
 export const createProduct = async ({ values }: Params) => {
-  // const imagesURL = await uploadImage(values.images)
   try {
     const {
       data: { user },
     } = await supabase.auth.getUser()
-    if (user === null) return
 
-    // const content = { ...values, user_id: user.id, images: imagesURL }
-    const content = { ...values, user_id: user.id }
+    if (user === null) {
+      return errorNotify({ message: 'Needs a user id' })
+    }
 
-    const { error } = await supabase.from('products').insert([content])
+    console.log('values.images', values.images)
+    const imagesURL = await uploadImage(values.images)
 
-    if (error != null) return errorNotify({ message: error?.message })
+    const newContent = {
+      user_id: user.id,
+      name: values.name,
+      slug: values.slug,
+      referential_code: values.referential_code,
+      description: values.description,
+      images: imagesURL,
+      categorys_id: +values.categorys_id,
+    }
+    const { data: products, error: productsError } = await supabase
+      .from('products')
+      .insert([newContent])
+
+    if (productsError != null) {
+      return errorNotify({ message: productsError?.message })
+    }
+
+    // Map modifiedVariables after getting product_id
+    const modifiedVariables = values.variants.map((object) => ({
+      ...object,
+      sizes_id: +object.sizes_id,
+      available_quantity:
+        object.available_quantity === 0 ? null : object.available_quantity,
+      price_offer: object.price_offer === 0 ? null : object.price_offer,
+      product_id: products && products[0] ? products[0].id : null,
+    }))
+
+    console.log('modifiedVariables', modifiedVariables)
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { data: variants, error: variantsError } = await supabase
+      .from('variants')
+      .upsert(modifiedVariables, { onConflict: 'size_id' })
+
+    if (variantsError) {
+      console.error('Error inserting variants into the database', variantsError)
+    }
+
     successNotify({ message: 'Success when creating the product' })
   } catch (error: any) {
     throw new Error(`Failed to create product: ${error.message}`)

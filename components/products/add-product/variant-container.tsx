@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { maxVariables } from '@/constants/products'
 
-const VariantContainer = ({ control, setValue }: any) => {
+const VariantContainer = ({ control }: any) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'variables',
+    name: 'variants',
     rules: {
       minLength: 1,
       maxLength: 4,
@@ -20,10 +20,10 @@ const VariantContainer = ({ control, setValue }: any) => {
     if (fields.length < maxVariables) {
       append({
         in_stock: true,
-        size_id: '',
-        price_product: 0,
+        sizes_id: '',
+        price_size: 0,
         available_quantity: 0,
-        offer_price: 0,
+        price_offer: 0,
       })
     }
   }
@@ -36,7 +36,7 @@ const VariantContainer = ({ control, setValue }: any) => {
           control={control}
           index={index}
           remove={remove}
-          variables={fields.length}
+          variants={fields.length}
         />
       ))}
 

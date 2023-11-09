@@ -8,7 +8,8 @@ cloudinary.config({
 })
 
 export async function POST(request: Request) {
-  const { paths } = await request.json()
+  const formData = await request.formData()
+  const paths = formData.getAll('paths')
 
   if (!paths) {
     return NextResponse.json(
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
     const urlImages = []
 
     for (const path of paths) {
-      const result = await cloudinary.uploader.upload(path, options)
+      const result = await cloudinary.uploader.upload(path as string, options)
       urlImages.push(result)
     }
 

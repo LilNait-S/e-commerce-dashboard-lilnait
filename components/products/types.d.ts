@@ -8,12 +8,12 @@ export interface ProductDetails {
   categorys_id: string
   created_at: string
   images: File[]
-  variables: {
+  variants: {
     in_stock: boolean
-    size_id: string
-    price_product: number
-    available_quantity?: number
-    offer_price?: number
+    sizes_id: string
+    price_size: number
+    available_quantity?: number | null
+    price_offer?: number | null
   }[]
 }
 
@@ -24,12 +24,12 @@ export interface ProductForm {
   description: string
   images: File[]
   categorys_id: string
-  variables: {
+  variants: {
     in_stock: boolean
-    size_id: string
-    price_product: number
-    available_quantity?: number
-    offer_price?: number
+    sizes_id: string
+    price_size: number
+    available_quantity?: number | null
+    price_offer?: number | null
   }[]
 }
 

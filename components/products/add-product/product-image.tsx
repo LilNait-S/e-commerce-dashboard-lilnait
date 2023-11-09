@@ -29,7 +29,7 @@ const ProductImage = ({ control }: any) => {
 
     if (!files || files.length === 0) return
     if (e.target.files === null) return
-    fieldChange(Array.from(e.target.files))
+    
 
     const imagePromises = []
     const urlImages: string[] = []
@@ -68,6 +68,8 @@ const ProductImage = ({ control }: any) => {
     Promise.all(imagePromises)
       .then((results) => {
         setImagePreviews(results as FileObject[])
+        console.log("results",results)
+        fieldChange(results as any[])
       })
       .catch((err) => {
         console.log(err)

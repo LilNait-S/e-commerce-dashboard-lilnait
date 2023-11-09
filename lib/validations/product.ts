@@ -3,12 +3,12 @@ import * as z from 'zod'
 
 const variableSchema = z.object({
   in_stock: z.boolean(),
-  size_id: z.string().nonempty({
+  sizes_id: z.string().nonempty({
     message: 'Description is required',
   }),
-  price_product: z.coerce.number().min(1, 'A price greater than 0 is required'),
+  price_size: z.coerce.number().min(1, 'A price greater than 0 is required'),
   available_quantity: z.coerce.number().optional(),
-  offer_price: z.coerce.number().optional(),
+  price_offer: z.coerce.number().optional(),
 })
 
 export const productSchema = z.object({
@@ -27,20 +27,23 @@ export const productSchema = z.object({
     .nonempty({
       message: 'Description is required',
     }),
-  images: z
-    .array(z.custom<File>())
-    .refine((images) => images.length >= 1, {
-      message: 'At least one image is required',
-    })
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      '.jpg, .jpeg, .png and .webp files are accepted.'
-    ),
+  images: z.array(z.any()).refine((images) => images.length >= 1, {
+    message: 'At least one image is required',
+  }),
+  // images: z
+  //   .array(z.custom<File>())
+  //   .refine((images) => images.length >= 1, {
+  //     message: 'At least one image is required',
+  //   })
+  //   .refine(
+  //     (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+  //     `Max file size is 5MB.`
+  //   )
+  //   .refine(
+  //     (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+  //     '.jpg, .jpeg, .png and .webp files are accepted.'
+  //   ),
 
   categorys_id: z.string({ required_error: 'Category is required' }),
-  variables: z.array(variableSchema),
+  variants: z.array(variableSchema),
 })
