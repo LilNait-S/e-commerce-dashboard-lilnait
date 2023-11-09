@@ -15,7 +15,7 @@ export const productSchema = z.object({
   slug: z
     .string()
     .min(2, { message: 'Minimum 2 characters' })
-    .max(50)
+    .max(60)
     .regex(/^[a-z0-9-]+$/),
   referential_code: z.string().max(20).nonempty({
     message: 'Referential code is required',
@@ -26,9 +26,7 @@ export const productSchema = z.object({
     .nonempty({
       message: 'Description is required',
     }),
-  images: z.array(z.instanceof(File)).refine((images) => images.length >= 1, {
-    message: 'At least one image is required',
-  }),
+  images: z.array(z.instanceof(File)),
   categorys_id: z.string({ required_error: 'Category is required' }),
   variables: z.array(variableSchema),
 })

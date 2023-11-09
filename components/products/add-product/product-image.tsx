@@ -22,11 +22,14 @@ const ProductImage = ({ control }: any) => {
 
   const handleChangeImages = (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string[]) => void
+    fieldChange: (value: File[]) => void
   ) => {
     e.preventDefault()
     const files = e.target.files
+
     if (!files || files.length === 0) return
+    if (e.target.files === null) return
+    fieldChange(Array.from(e.target.files))
 
     const imagePromises = []
     let id = 1
@@ -65,7 +68,6 @@ const ProductImage = ({ control }: any) => {
     Promise.all(imagePromises)
       .then((results) => {
         setImagePreviews(results as FileObject[])
-        fieldChange(urlImages)
       })
       .catch((err) => {
         console.log(err)

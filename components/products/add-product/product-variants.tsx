@@ -47,7 +47,7 @@ const ProductVariants = ({
           <ProductDelete remove={remove} index={index} />
         )}
       </header>
-      <main className='flex items-center gap-5'>
+      <main className='flex gap-5 justify-start items-start'>
         <ProductSizes control={control} index={index} />
         <FormField
           control={control}

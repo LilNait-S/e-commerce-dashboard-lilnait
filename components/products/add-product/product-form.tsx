@@ -46,12 +46,12 @@ const ProductForm = ({ type, product }: Props) => {
       referential_code: product?.referential_code ?? '',
       description: product?.description ?? '',
       images: product?.images ?? [],
-      categorys_id: product?.categorys_id ?? '',
+      categorys_id: product?.categorys_id ?? '1',
 
       variables: [
         {
           in_stock: true,
-          size_id: '',
+          size_id: '1',
           price_product: 0,
           available_quantity: 0,
           offer_price: 0,
@@ -129,14 +129,19 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input {...field} type='text' />
+                    <Input
+                      {...field}
+                      type='text'
+                    />
                   </FormControl>
                   <Button
                     type='button'
                     size='icon'
                     variant='ghost'
                     className='absolute right-0 top-6'
-                    onClick={handleSlug}
+                    onClick={() => {
+                      handleSlug(field.onChange)
+                    }}
                   >
                     <RefreshCcw className='h-5 w-5' />
                   </Button>
@@ -179,7 +184,7 @@ const ProductForm = ({ type, product }: Props) => {
             <ProductCategory control={form.control} />
           </section>
 
-          <VariantContainer control={form.control} />
+          <VariantContainer control={form.control} setValue={form.setValue} />
         </div>
       </form>
     </Form>
