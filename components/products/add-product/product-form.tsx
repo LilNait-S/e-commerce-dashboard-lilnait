@@ -129,19 +129,14 @@ const ProductForm = ({ type, product }: Props) => {
                 <FormItem className='relative'>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type='text'
-                    />
+                    <Input {...field} type='text' />
                   </FormControl>
                   <Button
                     type='button'
                     size='icon'
                     variant='ghost'
                     className='absolute right-0 top-6'
-                    onClick={() => {
-                      handleSlug(field.onChange)
-                    }}
+                    onClick={handleSlug}
                   >
                     <RefreshCcw className='h-5 w-5' />
                   </Button>

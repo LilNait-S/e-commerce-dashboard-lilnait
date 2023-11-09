@@ -9,6 +9,7 @@ import { errorNotify } from '@/lib/common/notifys'
 import { useState } from 'react'
 import { SortableLayer } from './sortable-layer'
 import { SortableItem } from './sortable-item'
+import { MAX_FILE_SIZE } from '@/constants/products'
 
 interface FileObject {
   id: number
@@ -18,7 +19,6 @@ interface FileObject {
 
 const ProductImage = ({ control }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObject[]>([])
-  const maxSizeInBytes = 5 * 1024 * 1024 // 5MB max
 
   const handleChangeImages = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -32,8 +32,8 @@ const ProductImage = ({ control }: any) => {
     fieldChange(Array.from(e.target.files))
 
     const imagePromises = []
-    let id = 1
     const urlImages: string[] = []
+    let id = 1
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
@@ -44,7 +44,7 @@ const ProductImage = ({ control }: any) => {
         continue
       }
 
-      if (file.size > maxSizeInBytes) {
+      if (file.size > MAX_FILE_SIZE) {
         errorNotify({
           message: `The image ${file.name} is too large. Maximum 5MB allowed.`,
         })

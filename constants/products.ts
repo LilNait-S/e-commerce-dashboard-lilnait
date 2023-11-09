@@ -9,6 +9,17 @@ export const categorys = [
   'Otros',
 ] as const
 
+/* images */
+
+export const MAX_FILE_SIZE = 5 * 1024 * 1024
+export const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+]
+
+
 /* variant section  */
 export const maxVariables = 4
 export const minVariables = 1

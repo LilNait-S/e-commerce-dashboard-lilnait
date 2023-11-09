@@ -1,3 +1,4 @@
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants/products'
 import * as z from 'zod'
 
 const variableSchema = z.object({
@@ -26,7 +27,20 @@ export const productSchema = z.object({
     .nonempty({
       message: 'Description is required',
     }),
-  images: z.array(z.instanceof(File)),
+  images: z
+    .array(z.custom<File>())
+    .refine((images) => images.length >= 1, {
+      message: 'At least one image is required',
+    })
+    .refine(
+      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`
+    )
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      '.jpg, .jpeg, .png and .webp files are accepted.'
+    ),
+
   categorys_id: z.string({ required_error: 'Category is required' }),
   variables: z.array(variableSchema),
 })
