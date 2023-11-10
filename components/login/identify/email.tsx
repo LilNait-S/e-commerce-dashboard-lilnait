@@ -37,7 +37,7 @@ const EmailIdentify = () => {
       successNotify({ message: 'Successfully reset password.' })
 
     } catch (e) {
-      console.log('error to log in')
+      console.error('error to log in')
     }
   }
   return (

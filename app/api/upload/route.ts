@@ -26,12 +26,14 @@ export async function POST(request: Request) {
       transformation: [{ aspect_ratio: '1:1', height: 1100, crop: 'fill' }],
     }
 
-    const urlImages = []
+    const DataOfImages = []
 
     for (const path of paths) {
       const result = await cloudinary.uploader.upload(path as string, options)
-      urlImages.push(result)
+      DataOfImages.push(result)
     }
+
+    const urlImages = DataOfImages.map((item) => item.url)
 
     return NextResponse.json(urlImages, { status: 200 })
   } catch (e) {

@@ -14,8 +14,6 @@ const VariantContainer = ({ control }: any) => {
     },
   })
 
-  console.log('fields', fields)
-
   const handleAppend = () => {
     if (fields.length < maxVariables) {
       append({

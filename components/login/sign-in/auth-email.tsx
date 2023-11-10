@@ -48,7 +48,7 @@ const AuthEmail = ({ children }: { children: React.ReactNode }) => {
 
       router.push('/')
     } catch (e) {
-      console.log('error to log in')
+      console.error('error to log in')
     }
   }
 

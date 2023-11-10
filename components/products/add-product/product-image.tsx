@@ -68,11 +68,10 @@ const ProductImage = ({ control }: any) => {
     Promise.all(imagePromises)
       .then((results) => {
         setImagePreviews(results as FileObject[])
-        console.log("results",results)
         fieldChange(results as any[])
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
       })
   }
 

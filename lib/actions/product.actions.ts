@@ -90,7 +90,6 @@ export const createProduct = async ({ values }: Params) => {
       return errorNotify({ message: 'Needs a user id' })
     }
 
-    console.log('values.images', values.images)
     const imagesURL = await uploadImage(values.images)
 
     const newContent = {
@@ -105,27 +104,24 @@ export const createProduct = async ({ values }: Params) => {
     const { data: products, error: productsError } = await supabase
       .from('products')
       .insert([newContent])
+      .select()
 
     if (productsError != null) {
       return errorNotify({ message: productsError?.message })
     }
 
-    // Map modifiedVariables after getting product_id
     const modifiedVariables = values.variants.map((object) => ({
       ...object,
       sizes_id: +object.sizes_id,
       available_quantity:
         object.available_quantity === 0 ? null : object.available_quantity,
       price_offer: object.price_offer === 0 ? null : object.price_offer,
-      product_id: products && products[0] ? products[0].id : null,
+      product_id: products[0].id,
     }))
 
-    console.log('modifiedVariables', modifiedVariables)
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data: variants, error: variantsError } = await supabase
+    const { error: variantsError } = await supabase
       .from('variants')
-      .upsert(modifiedVariables, { onConflict: 'size_id' })
+      .insert(modifiedVariables)
 
     if (variantsError) {
       console.error('Error inserting variants into the database', variantsError)

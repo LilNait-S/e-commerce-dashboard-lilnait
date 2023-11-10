@@ -40,7 +40,7 @@ const RecoverPassword = () => {
       if (error != null) return errorNotify({ message: error?.message })
       successNotify({ message: 'Successfully reset password.' })
     } catch (e) {
-      console.log('error to log in')
+      console.error('error to log in')
     }
   }
 

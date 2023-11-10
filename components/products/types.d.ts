@@ -33,6 +33,18 @@ export interface ProductForm {
   }[]
 }
 
+export interface Products {
+  id: string
+  created_at: string
+  description: string
+  user_id: string
+  name: string
+  referential_code?: string | null
+  categorys_id: number
+  slug: string
+  images: string[]
+}
+
 export interface Sizes {
   id: number
   size: string
