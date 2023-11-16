@@ -7,10 +7,11 @@ export interface ProductDetails {
   description: string
   categorys_id: string
   created_at: string
-  images: File[]
+  images: File[] | string[]
+  thumbnail?: string[]
   variants: {
     in_stock: boolean
-    sizes_id: string
+    sizes_id: number
     price_size: number
     available_quantity?: number | null
     price_offer?: number | null

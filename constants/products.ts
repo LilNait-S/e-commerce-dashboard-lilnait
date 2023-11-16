@@ -19,7 +19,6 @@ export const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ]
 
-
 /* variant section  */
 export const maxVariables = 4
 export const minVariables = 1
@@ -28,18 +27,22 @@ export const sizesVariant = [
   {
     value: '1',
     size: 'Pequeño',
+    acronym: 'S',
   },
   {
     value: '2',
     size: 'Mediano',
+    acronym: 'M',
   },
   {
     value: '3',
     size: 'Grande',
+    acronym: 'G',
   },
   {
     value: '4',
     size: 'Gigante',
+    acronym: 'XG',
   },
 ] as const
 

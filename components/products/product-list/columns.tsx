@@ -21,6 +21,7 @@ import { DataTableColumnHeader } from '@/components/products/product-list/datata
 import Link from 'next/link'
 import DeleteRow from './delete-row'
 import { Label } from '@radix-ui/react-label'
+import { sizesVariant } from '@/constants/products'
 
 export const columns: ColumnDef<ProductDetails>[] = [
   {
@@ -66,17 +67,68 @@ export const columns: ColumnDef<ProductDetails>[] = [
     accessorKey: 'description',
     header: 'Description',
   },
-  {
-    accessorKey: 'price',
-    header: () => <div className='text-right'>Price</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('price'))
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount)
+  // {
+  //   accessorKey: 'price',
+  //   header: () => <div className='text-right'>Price</div>,
+  //   cell: ({ row }) => {
+  //     const amount = parseFloat(row.getValue('price'))
+  //     const formatted = new Intl.NumberFormat('en-US', {
+  //       style: 'currency',
+  //       currency: 'USD',
+  //     }).format(amount)
 
-      return <div className='text-right font-medium'>{formatted}</div>
+  //     return <div className='text-right font-medium'>{formatted}</div>
+  //   },
+  // },
+  {
+    accessorKey: 'variants',
+    header: 'Variants',
+    cell: ({ row }) => {
+      const product = row.original
+
+      const filteredSizes = sizesVariant.filter((size) =>
+        product.variants.some(
+          (variant) => variant.sizes_id.toString() === size.value
+        )
+      )
+      return (
+        <div className='flex -space-x-2 items-center'>
+          {filteredSizes.map((size) => (
+            <div
+              key={size.value}
+              className='flex items-center justify-center bg-secondary rounded-full h-8 w-8 border-2 border-card'
+            >
+              <span>{size.acronym}</span>
+            </div>
+          ))}
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'images',
+    header: 'Images',
+    cell: ({ row }) => {
+      const product = row.original
+      return (
+        <div className='flex -space-x-2 items-center'>
+          {product.images?.slice(0, 3).map((image, i) => (
+            <img
+              key={i}
+              src={image as string}
+              className='rounded-full'
+              width={25}
+              height={25}
+            />
+          ))}
+
+          {product.images.length > 3 ? (
+            <div className='flex items-center justify-center bg-secondary rounded-full h-7 w-7'>
+              +{product.images.length - 3}
+            </div>
+          ) : null}
+        </div>
+      )
     },
   },
   {

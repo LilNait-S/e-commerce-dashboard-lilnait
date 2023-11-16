@@ -2,12 +2,9 @@ import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
 import {
   type SupabaseClient,
-  type PostgrestSingleResponse,
+  type PostgrestResponse,
 } from '@supabase/supabase-js'
-import {
-  type ProductDetails,
-  type ProductForm,
-} from '@/components/products/types'
+import { type ProductForm } from '@/components/products/types'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -19,22 +16,31 @@ const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_SERVER_URL
   : 'http://localhost:3000'
 
-export const fetchProducts = async ({
-  supabaseServer,
-}: {
-  supabaseServer: SupabaseClient<any, 'public', any>
-}) => {
-  const { data: products, error }: PostgrestSingleResponse<ProductDetails[]> =
-    await supabaseServer.from('products').select('*')
+export const fetchProducts = async ({ supabaseServer }: any) => {
+  const { data: products, error: productsError }: PostgrestResponse<any> =
+    await supabase.from('products').select('*')
 
-  if (error) {
-    throw new Error('Products not found')
-  }
-  if (!products) {
-    throw new Error('Products not found')
+  if (productsError) {
+    throw new Error(productsError.message)
   }
 
-  return { products }
+  const { data: variants, error: variantsError }: PostgrestResponse<any> =
+    await supabaseServer.from('variants').select('*')
+
+  if (variantsError) {
+    throw new Error(variantsError.message)
+  }
+
+  const combinedData = products.map((product) => ({
+    ...product,
+    variants: variants.filter((variant) => variant.product_id === product.id),
+  }))
+
+  if (!combinedData) {
+    throw new Error('Products not found')
+  }
+
+  return { products: combinedData }
 }
 
 export const getProductDetails = async ({
@@ -91,6 +97,10 @@ export const createProduct = async ({ values }: Params) => {
     }
 
     const imagesURL = await uploadImage(values.images)
+
+    if (!imagesURL) {
+      return errorNotify({ message: imagesURL?.message })
+    }
 
     const newContent = {
       user_id: user.id,
