@@ -23,6 +23,7 @@ export async function POST(req: Request) {
       unique_filename: false,
       overwrite: true,
       transformation: [{ aspect_ratio: '1:1', height: 1100, crop: 'fill' }],
+      folder: 'aini28',
     }
 
     const dataImages = []

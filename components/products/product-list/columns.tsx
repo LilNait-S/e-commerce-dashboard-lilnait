@@ -110,8 +110,6 @@ export const columns: ColumnDef<ProductColumns>[] = [
     header: 'Images',
     cell: ({ row }) => {
       const product = row.original
-
-      console.log('product', product)
       return (
         <div className='flex -space-x-2 items-center'>
           {product.images?.slice(0, 3).map((image, i) => (

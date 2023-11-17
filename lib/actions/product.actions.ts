@@ -161,6 +161,22 @@ export const createProduct = async ({ values }: Params) => {
   }
 }
 
+export const deleteImage = async (publicIds: string[]) => {
+  try {
+    const response = await fetch(`${serverUrl}/api/cloudinary/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(publicIds),
+    })
+
+    return await response.json()
+  } catch (e) {
+    console.error('Error on uploadImage:', e)
+    throw new Error('Error on uploadImage')
+  }
+}
 export const deleteProduct = async ({
   id,
   imgsData,
@@ -173,6 +189,12 @@ export const deleteProduct = async ({
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
+
+    const publicIds = imgsData.map((id) => id.public_id)
+    const { error: ErrorCloudinary } = await deleteImage(publicIds)
+    if (ErrorCloudinary) {
+      return errorNotify({ message: ErrorCloudinary?.message })
+    }
 
     const { error: errorProducts } = await supabase
       .from('products')
@@ -188,12 +210,23 @@ export const deleteProduct = async ({
   }
 }
 
-export const deleteProducts = async ({ ids }: { ids: string[] }) => {
+export const deleteProducts = async ({
+  ids,
+  publicIds,
+}: {
+  ids: string[]
+  publicIds: string[]
+}) => {
   try {
     const {
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
+
+    const { error: ErrorCloudinary } = await deleteImage(publicIds)
+    if (ErrorCloudinary) {
+      return errorNotify({ message: ErrorCloudinary?.message })
+    }
 
     const { error } = await supabase.from('products').delete().in('id', ids)
     if (error != null) return errorNotify({ message: error?.message })

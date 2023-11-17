@@ -15,13 +15,7 @@ const DeleteRow = ({ id, imgsData }: Props) => {
     router.refresh()
   }
   return (
-    <Button
-      variant='ghost'
-      className='h-8 w-8 p-0'
-      onClick={() => {
-        handleDelete()
-      }}
-    >
+    <Button variant='ghost' className='h-8 w-8 p-0' onClick={handleDelete}>
       <span className='sr-only'>Delete product</span>
       <TrashIcon className='h-4 w-4' />
     </Button>

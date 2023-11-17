@@ -16,11 +16,17 @@ export function DeleteRows<TData>({
 }: DataTableProps<TData>) {
   const router = useRouter()
   const handleDeleteRowSelected = async () => {
-    const idsToDelete = Object.keys(rowSelection)
+    const ids = Object.keys(rowSelection)
       .filter((index) => rowSelection[index])
       .map((index) => data[parseInt(index)].id)
 
-    await deleteProducts({ ids: idsToDelete })
+    const publicIds = Object.keys(rowSelection)
+      .filter((index) => rowSelection[index])
+      .map((index) => data[parseInt(index)])
+      .flatMap((image) => image.images)
+      .map((data) => data.public_id)
+
+    await deleteProducts({ ids, publicIds })
 
     router.refresh()
     setRowSelection({})

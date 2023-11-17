@@ -7,37 +7,30 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 })
 
-export async function POST(req: Request) {
-  const paths = await req.json()
-
-  if (!paths) {
-    return NextResponse.json(
-      { message: 'Image path is required' },
-      { status: 400 }
-    )
+export async function DELETE(req: Request) {
+  if (req.method !== 'DELETE') {
+    return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
+  const publicIds: string[] = await req.json()
+
   try {
-    const options = {
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-      transformation: [{ aspect_ratio: '1:1', height: 1100, crop: 'fill' }],
+    for (const publicId of publicIds) {
+      await cloudinary.uploader.destroy(publicId, { invalidate: true })
+      console.log(`image with public id: '${publicId}' deleted successfully`)
     }
 
-    const DataOfImages = []
+    const responseMessage =
+      publicIds.length === 1
+        ? `Image with public ID '${publicIds[0]}' deleted successfully.`
+        : `${publicIds.length} images deleted successfully.`
 
-    for (const path of paths) {
-      const result = await cloudinary.uploader.upload(path, options)
-      DataOfImages.push(result)
-    }
-
-    console.log('DataOfImages', DataOfImages)
-
-    const urlImages = DataOfImages.map((item) => item.secure_url)
-
-    return NextResponse.json(urlImages, { status: 200 })
-  } catch (e) {
-    return NextResponse.json({ message: e }, { status: 500 })
+    return NextResponse.json({ message: responseMessage }, { status: 200 })
+  } catch (error) {
+    console.error('Error deleting images from Cloudinary:', error)
+    return NextResponse.json(
+      { error: 'Error deleting images from Cloudinary' },
+      { status: 500 }
+    )
   }
 }
