@@ -27,12 +27,7 @@ export function DeleteRows<TData>({
   }
 
   return (
-    <Button
-      variant='ghost'
-      onClick={() => {
-        handleDeleteRowSelected()
-      }}
-    >
+    <Button variant='ghost' onClick={handleDeleteRowSelected}>
       <TrashIcon className='h-5 w-5' />
     </Button>
   )

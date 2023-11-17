@@ -7,22 +7,36 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 })
 
-export async function POST(request: Request) {
-  const { ids } = await request.json()
+export async function POST(req: Request) {
+  const paths = await req.json()
 
-  if (!ids) {
+  if (!paths) {
     return NextResponse.json(
-      { message: 'ids of images is required' },
+      { message: 'Image path is required' },
       { status: 400 }
     )
   }
 
   try {
-    cloudinary.api
-      .delete_resources(['ids'], { type: 'upload', resource_type: 'image' })
-      .then(console.log)
+    const options = {
+      use_filename: true,
+      unique_filename: false,
+      overwrite: true,
+      transformation: [{ aspect_ratio: '1:1', height: 1100, crop: 'fill' }],
+    }
 
-    return NextResponse.json({ status: 200 })
+    const DataOfImages = []
+
+    for (const path of paths) {
+      const result = await cloudinary.uploader.upload(path, options)
+      DataOfImages.push(result)
+    }
+
+    console.log('DataOfImages', DataOfImages)
+
+    const urlImages = DataOfImages.map((item) => item.secure_url)
+
+    return NextResponse.json(urlImages, { status: 200 })
   } catch (e) {
     return NextResponse.json({ message: e }, { status: 500 })
   }

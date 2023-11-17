@@ -7,8 +7,22 @@ export interface ProductColumns {
   description: string
   categorys_id: string
   created_at: string
-  images: string[]
+  images: imagesDB[]
   variants: variants[]
+}
+
+export interface imagesDB {
+  id: number
+  created_at: Date
+  asset_id: string
+  public_id: string
+  format: string
+  tags?: string[]
+  type: string
+  url: string
+  secure_url: string
+  folder: string
+  product_id: string
 }
 
 export interface ProductValue {

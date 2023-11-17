@@ -2,11 +2,16 @@ import { Button } from '@/components/ui/button'
 import { deleteProduct } from '@/lib/actions/product.actions'
 import { TrashIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
+import { type imagesDB } from '../types'
 
-const DeleteRow = ({ id }: { id: string }) => {
+interface Props {
+  id: string
+  imgsData: imagesDB[]
+}
+const DeleteRow = ({ id, imgsData }: Props) => {
   const router = useRouter()
-  const handleDelete = ({ id }: { id: string }) => {
-    deleteProduct({ id })
+  const handleDelete = () => {
+    deleteProduct({ id, imgsData })
     router.refresh()
   }
   return (
@@ -14,7 +19,7 @@ const DeleteRow = ({ id }: { id: string }) => {
       variant='ghost'
       className='h-8 w-8 p-0'
       onClick={() => {
-        handleDelete({ id })
+        handleDelete()
       }}
     >
       <span className='sr-only'>Delete product</span>

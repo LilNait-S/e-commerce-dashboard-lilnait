@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
   if (!paths) {
     return NextResponse.json(
-      { message: 'Image path is required' },
+      { error: 'Image paths are required' },
       { status: 400 }
     )
   }
@@ -25,19 +25,27 @@ export async function POST(req: Request) {
       transformation: [{ aspect_ratio: '1:1', height: 1100, crop: 'fill' }],
     }
 
-    const DataOfImages = []
+    const dataImages = []
 
     for (const path of paths) {
-      const result = await cloudinary.uploader.upload(path, options)
-      DataOfImages.push(result)
+      try {
+        const res = await cloudinary.uploader.upload(path, options)
+        dataImages.push(res)
+      } catch (uploadError) {
+        console.error('Error al subir una imagen a Cloudinary:', uploadError)
+        return NextResponse.json(
+          { error: 'Error al subir imágenes a Cloudinary' },
+          { status: 500 }
+        )
+      }
     }
 
-    console.log('DataOfImages', DataOfImages)
-
-    const urlImages = DataOfImages.map((item) => item.secure_url)
-
-    return NextResponse.json(urlImages, { status: 200 })
-  } catch (e) {
-    return NextResponse.json({ message: e }, { status: 500 })
+    return NextResponse.json(dataImages, { status: 200 })
+  } catch (error) {
+    console.error('Error en la API de carga de imágenes:', error)
+    return NextResponse.json(
+      { error: 'Error en la API de carga de imágenes' },
+      { status: 500 }
+    )
   }
 }

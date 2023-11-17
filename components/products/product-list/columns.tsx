@@ -110,12 +110,14 @@ export const columns: ColumnDef<ProductColumns>[] = [
     header: 'Images',
     cell: ({ row }) => {
       const product = row.original
+
+      console.log('product', product)
       return (
         <div className='flex -space-x-2 items-center'>
           {product.images?.slice(0, 3).map((image, i) => (
             <img
               key={i}
-              src={image}
+              src={image.secure_url}
               className='rounded-full'
               width={25}
               height={25}
@@ -145,7 +147,7 @@ export const columns: ColumnDef<ProductColumns>[] = [
             <span className='sr-only'>Edit product</span>
             <Pencil2Icon className='h-4 w-4' />
           </Link>
-          <DeleteRow id={product.id} />
+          <DeleteRow id={product.id} imgsData={product.images} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>

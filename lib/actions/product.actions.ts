@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
 import { type PostgrestResponse } from '@supabase/supabase-js'
-import { type ProductValue } from '@/components/products/types'
+import { type imagesDB, type ProductValue } from '@/components/products/types'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -28,9 +28,17 @@ export const fetchProducts = async () => {
     throw new Error(variantsError.message)
   }
 
+  const { data: images, error: imagesError }: PostgrestResponse<any> =
+    await supabase.from('images').select('*')
+
+  if (imagesError) {
+    throw new Error(imagesError.message)
+  }
+
   const combinedData = products.map((product) => ({
     ...product,
     variants: variants.filter((variant) => variant.product_id === product.id),
+    images: images.filter((image) => image.product_id === product.id),
   }))
 
   if (!combinedData) {
@@ -85,21 +93,15 @@ export const createProduct = async ({ values }: Params) => {
       return errorNotify({ message: 'Needs a user id' })
     }
 
-    const imagesURL = await uploadImage(values.images)
-
-    if (!imagesURL) {
-      return errorNotify({ message: "image upload error" })
-    }
-
     const newContent = {
       user_id: user.id,
       name: values.name,
       slug: values.slug,
       referential_code: values.referential_code,
       description: values.description,
-      images: imagesURL,
       categorys_id: +values.categorys_id,
     }
+
     const { data: products, error: productsError } = await supabase
       .from('products')
       .insert([newContent])
@@ -107,6 +109,33 @@ export const createProduct = async ({ values }: Params) => {
 
     if (productsError != null) {
       return errorNotify({ message: productsError?.message })
+    }
+
+    const dataImages = await uploadImage(values.images)
+
+    if (!dataImages) {
+      return errorNotify({ message: 'image upload error' })
+    }
+
+    const newImages = dataImages.map((data: imagesDB) => ({
+      created_at: data.created_at,
+      asset_id: data.asset_id,
+      public_id: data.public_id,
+      format: data.format,
+      tags: data.tags,
+      type: data.type,
+      url: data.url,
+      secure_url: data.secure_url,
+      folder: data.folder,
+      product_id: products[0].id,
+    }))
+
+    const { error: imagesError } = await supabase
+      .from('images')
+      .insert(newImages)
+
+    if (imagesError) {
+      console.error('Error inserting images into the database', imagesError)
     }
 
     const modifiedVariables = values.variants.map((object) => ({
@@ -132,15 +161,27 @@ export const createProduct = async ({ values }: Params) => {
   }
 }
 
-export const deleteProduct = async ({ id }: { id: string }) => {
+export const deleteProduct = async ({
+  id,
+  imgsData,
+}: {
+  id: string
+  imgsData: imagesDB[]
+}) => {
   try {
     const {
       data: { user },
     } = await supabase.auth.getUser()
     if (user === null) return
 
-    const { error } = await supabase.from('products').delete().eq('id', id)
-    if (error != null) return errorNotify({ message: error?.message })
+    const { error: errorProducts } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id)
+    if (errorProducts != null) {
+      return errorNotify({ message: errorProducts?.message })
+    }
+
     successNotify({ message: 'Success when deleting the product' })
   } catch (error: any) {
     throw new Error(`Failed to delete product: ${error.message}`)
@@ -156,7 +197,7 @@ export const deleteProducts = async ({ ids }: { ids: string[] }) => {
 
     const { error } = await supabase.from('products').delete().in('id', ids)
     if (error != null) return errorNotify({ message: error?.message })
-    successNotify({ message: 'Success when deleting the product(s)' })
+    successNotify({ message: 'Success when deleting the products' })
   } catch (error: any) {
     throw new Error(`Failed to delete product(s): ${error.message}`)
   }
