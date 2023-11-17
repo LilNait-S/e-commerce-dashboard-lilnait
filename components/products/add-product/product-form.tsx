@@ -64,10 +64,11 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
-        await createProduct({
-          values,
-        })
-        router.push('/products/product-list')
+        console.log('values', values)
+        // await createProduct({
+        //   values,
+        // })
+        // router.push('/products/product-list')
       }
       if (type === 'edit') {
         // await updateProduct({ values, productId: product?.id as string })
@@ -173,7 +174,7 @@ const ProductForm = ({ type, product }: Props) => {
               )}
             />
 
-            <ProductImage control={form.control} />
+            <ProductImage form={form} />
             <ProductCategory control={form.control} />
           </section>
 

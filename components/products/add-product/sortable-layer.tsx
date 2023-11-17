@@ -25,10 +25,12 @@ export function SortableLayer({
   children,
   items,
   setItems,
+  form,
 }: {
   children: ReactNode
   items: any[]
   setItems: Dispatch<SetStateAction<any[]>>
+  form: any
 }) {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -38,6 +40,10 @@ export function SortableLayer({
         const oldIndex = items.findIndex((item) => item.id === active.id)
         const newIndex = items.findIndex((item) => item.id === over?.id)
 
+        form.setValue(
+          'images',
+          arrayMove(items, oldIndex, newIndex).map((entry) => entry.preview)
+        )
         return arrayMove(items, oldIndex, newIndex)
       })
     }

@@ -11,10 +11,10 @@ import { SortableLayer } from './sortable-layer'
 import { SortableItem } from './sortable-item'
 import { MAX_FILE_SIZE } from '@/constants/products'
 import { type FileObjectImage } from '../types'
+import { Input } from '@/components/ui/input'
 
-const ProductImage = ({ control }: any) => {
+const ProductImage = ({ form }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObjectImage[]>([])
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleChangeImages = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -23,9 +23,7 @@ const ProductImage = ({ control }: any) => {
     e.preventDefault()
 
     const files = e.target.files
-
     if (!files || files.length === 0) return
-
     const imagePromises: Promise<FileObjectImage>[] = []
     let id = 1
 
@@ -59,9 +57,9 @@ const ProductImage = ({ control }: any) => {
 
     Promise.all(imagePromises)
       .then((results) => {
-        const pathBS64 = results.map((path) => path.preview)
         setImagePreviews(results)
-        fieldChange(pathBS64)
+        const data = results.map((entry) => entry.preview)
+        fieldChange(data)
       })
       .catch((err) => {
         console.error(err)
@@ -73,11 +71,14 @@ const ProductImage = ({ control }: any) => {
       (item) => item.name !== imageName
     )
     setImagePreviews(updatedPreviews)
+
+    const dataImgs = updatedPreviews.map((entry) => entry.preview)
+    form.setValue('images', dataImgs)
   }
 
   return (
     <FormField
-      control={control}
+      control={form.control}
       name='images'
       render={({ field }) => (
         <FormItem>
@@ -111,8 +112,7 @@ const ProductImage = ({ control }: any) => {
                 </p>
               </div>
               <FormControl>
-                <input
-                  ref={fileInputRef}
+                <Input
                   id='dropzone-file'
                   type='file'
                   accept='image/jpg, image/jpeg, image/png, image/avif, image/webp'
@@ -128,7 +128,11 @@ const ProductImage = ({ control }: any) => {
           </div>
 
           <div className='flex flex-col gap-y-3 mt-3'>
-            <SortableLayer items={imagePreviews} setItems={setImagePreviews}>
+            <SortableLayer
+              items={imagePreviews}
+              setItems={setImagePreviews}
+              form={form}
+            >
               {imagePreviews?.length ? (
                 imagePreviews.map((file, i) => {
                   return (
