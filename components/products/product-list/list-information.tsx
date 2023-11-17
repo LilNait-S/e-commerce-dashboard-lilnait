@@ -5,6 +5,8 @@ import { fetchProducts } from '@/lib/actions/product.actions'
 const ListInformation = async () => {
   const { products } = await fetchProducts()
 
+  console.log('products', products)
+
   return (
     <div>
       <DataTable columns={columns} data={products} />

@@ -46,8 +46,8 @@ const ProductForm = ({ type, product }: Props) => {
       referential_code: product?.referential_code ?? '',
       description: product?.description ?? '',
       images: product?.images ?? [],
-      categorys_id: product?.categorys_id ?? '1',
-      variants: [
+      categorys_id: product?.categorys_id.toString() ?? '1',
+      variants: product?.variants ?? [
         {
           in_stock: true,
           sizes_id: '1',

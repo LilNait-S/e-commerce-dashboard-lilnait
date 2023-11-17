@@ -12,6 +12,7 @@ import { SortableItem } from './sortable-item'
 import { MAX_FILE_SIZE } from '@/constants/products'
 import { type FileObjectImage } from '../types'
 import { Input } from '@/components/ui/input'
+import ProductSortable from './product-sortable'
 
 const ProductImage = ({ form }: any) => {
   const [imagePreviews, setImagePreviews] = useState<FileObjectImage[]>([])
@@ -76,6 +77,10 @@ const ProductImage = ({ form }: any) => {
     form.setValue('images', dataImgs)
   }
 
+  const images = form.watch('images')
+
+  console.log('images', images)
+
   return (
     <FormField
       control={form.control}
@@ -89,27 +94,39 @@ const ProductImage = ({ form }: any) => {
               className='flex flex-col items-center justify-center w-full h-64 border-2 border-border border-dashed rounded-lg cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-900'
             >
               <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                <svg
-                  className='w-8 h-8 mb-4 text-gray-500'
-                  aria-hidden='true'
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 20 16'
-                >
-                  <path
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'
-                  />
-                </svg>
-                <p className='mb-2 text-sm text-gray-500'>
-                  <span className='font-semibold'>Click to upload</span>
-                </p>
-                <p className='text-xs text-gray-500 max-w-[20ch] text-center'>
-                  PNG, JPG, AVIF or WEBP (MAX. 1000x1000px or 2mb per image)
-                </p>
+                {field.value.length > 0 ? (
+                  <>
+                    {images.map((entry, i) => (
+                      <div key={i}>
+                        <img src={entry.secure_url} width={50} height={50} />
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className='w-8 h-8 mb-4 text-gray-500'
+                      aria-hidden='true'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 20 16'
+                    >
+                      <path
+                        stroke='currentColor'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
+                        d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'
+                      />
+                    </svg>
+                    <p className='mb-2 text-sm text-gray-500'>
+                      <span className='font-semibold'>Click to upload</span>
+                    </p>
+                    <p className='text-xs text-gray-500 max-w-[20ch] text-center'>
+                      PNG, JPG, AVIF or WEBP (MAX. 1000x1000px or 2mb per image)
+                    </p>
+                  </>
+                )}
               </div>
               <FormControl>
                 <Input
@@ -127,45 +144,12 @@ const ProductImage = ({ form }: any) => {
             </FormLabel>
           </div>
 
-          <div className='flex flex-col gap-y-3 mt-3'>
-            <SortableLayer
-              items={imagePreviews}
-              setItems={setImagePreviews}
-              form={form}
-            >
-              {imagePreviews?.length ? (
-                imagePreviews.map((file, i) => {
-                  return (
-                    <SortableItem
-                      itemsLength={imagePreviews.length}
-                      key={file.id}
-                      id={file.id}
-                      name={file.name}
-                      className={
-                        'text-md group flex items-center justify-between rounded-md bg-neutral-100 px-3 py-2 font-mono dark:bg-neutral-900'
-                      }
-                      onRemove={handleRemoveImage}
-                    >
-                      <img
-                        src={file.preview}
-                        className='w-8 h-8 object-cover ml-2'
-                      />
-                      <span className='text-xs ml-2 whitespace-nowrap overflow-hidden text-ellipsis'>
-                        {file.name.length > 20
-                          ? `${file.name.substring(0, 20)}...`
-                          : file.name}
-                        {i === 0 ? '(main image)' : null}
-                      </span>
-                    </SortableItem>
-                  )
-                })
-              ) : (
-                <span className='flex flex-grow justify-center text-xs'>
-                  No hay imagenes para este producto
-                </span>
-              )}
-            </SortableLayer>
-          </div>
+          <ProductSortable
+            form={form}
+            imagePreviews={imagePreviews}
+            setImagePreviews={setImagePreviews}
+            handleRemoveImage={handleRemoveImage}
+          />
         </FormItem>
       )}
     />

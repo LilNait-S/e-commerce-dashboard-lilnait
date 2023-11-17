@@ -49,21 +49,45 @@ export const fetchProducts = async () => {
 }
 
 export const getProductDetails = async ({ id }: { id: string }) => {
-  const { data: products, error } = await supabase
+  const { data: products, error: productsError } = await supabase
     .from('products')
     .select('*')
     .eq('id', id)
 
-  if (error) {
+  if (productsError) {
     throw new Error('Product not found')
   }
+
   if (!products) {
     throw new Error('Product not found')
   }
 
-  const product = products[0]
+  const { data: variants, error: variantsError }: PostgrestResponse<any> =
+    await supabase.from('variants').select('*').eq('product_id', id)
 
-  return { product }
+  if (variantsError) {
+    throw new Error(variantsError.message)
+  }
+
+  const { data: images, error: imagesError }: PostgrestResponse<any> =
+    await supabase.from('images').select('*').eq('product_id', id)
+
+  if (imagesError) {
+    throw new Error(imagesError.message)
+  }
+
+  const combinedData = {
+    ...products[0],
+    variants: [
+      ...variants.map((variant) => ({
+        ...variant,
+        sizes_id: variant.sizes_id.toString(),
+      })),
+    ],
+    images,
+  }
+
+  return { product: combinedData }
 }
 
 export const uploadImage = async (paths: string[]) => {
@@ -141,9 +165,6 @@ export const createProduct = async ({ values }: Params) => {
     const modifiedVariables = values.variants.map((object) => ({
       ...object,
       sizes_id: +object.sizes_id,
-      available_quantity:
-        object.available_quantity === 0 ? null : object.available_quantity,
-      price_offer: object.price_offer === 0 ? null : object.price_offer,
       product_id: products[0].id,
     }))
 
