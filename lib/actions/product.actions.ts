@@ -58,14 +58,14 @@ export const getProductDetails = async ({ id }: { id: string }) => {
   return { product }
 }
 
-export const uploadImage = async (imagePath: string[]) => {
+export const uploadImage = async (paths: string[]) => {
   try {
     const response = await fetch(`${serverUrl}/api/cloudinary/upload`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(imagePath),
+      body: JSON.stringify(paths),
     })
 
     return await response.json()

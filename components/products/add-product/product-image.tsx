@@ -104,11 +104,10 @@ const ProductImage = ({ control }: any) => {
                   />
                 </svg>
                 <p className='mb-2 text-sm text-gray-500'>
-                  <span className='font-semibold'>Click to upload</span> or drag
-                  and drop
+                  <span className='font-semibold'>Click to upload</span>
                 </p>
                 <p className='text-xs text-gray-500 max-w-[20ch] text-center'>
-                  PNG, JPG, AVIF or WEBP (MAX. 1000x1000px or 5mb per image)
+                  PNG, JPG, AVIF or WEBP (MAX. 1000x1000px or 2mb per image)
                 </p>
               </div>
               <FormControl>

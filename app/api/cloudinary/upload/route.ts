@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     console.log('DataOfImages', DataOfImages)
 
-    const urlImages = DataOfImages.map((item) => item.url)
+    const urlImages = DataOfImages.map((item) => item.secure_url)
 
     return NextResponse.json(urlImages, { status: 200 })
   } catch (e) {

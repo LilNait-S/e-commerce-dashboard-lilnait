@@ -56,7 +56,11 @@ const ProductVariants = ({
             <FormItem className='flex-1'>
               <FormLabel>Price</FormLabel>
               <FormControl>
-                <Input {...field} type='number' />
+                <Input
+                  {...field}
+                  type='number'
+                  className='[&::-webkit-inner-spin-button]:appearance-none'
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,7 +77,11 @@ const ProductVariants = ({
             <FormItem className='flex-1'>
               <FormLabel>Available quantity</FormLabel>
               <FormControl>
-                <Input {...field} type='number' />
+                <Input
+                  {...field}
+                  type='number'
+                  className='[&::-webkit-inner-spin-button]:appearance-none'
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,7 +95,11 @@ const ProductVariants = ({
             <FormItem className='flex-1'>
               <FormLabel>Offer price</FormLabel>
               <FormControl>
-                <Input {...field} type='number' />
+                <Input
+                  {...field}
+                  type='number'
+                  className='[&::-webkit-inner-spin-button]:appearance-none'
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
