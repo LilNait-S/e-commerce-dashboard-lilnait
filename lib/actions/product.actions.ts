@@ -88,7 +88,7 @@ export const createProduct = async ({ values }: Params) => {
     const imagesURL = await uploadImage(values.images)
 
     if (!imagesURL) {
-      return errorNotify({ message: imagesURL?.message })
+      return errorNotify({ message: "image upload error" })
     }
 
     const newContent = {

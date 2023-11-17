@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { maxVariables } from '@/constants/products'
 
-const VariantContainer = ({ control }: any) => {
+const VariantContainer = ({ form }: any) => {
   const { fields, append, remove } = useFieldArray({
-    control,
+    control: form.control,
     name: 'variants',
     rules: {
       minLength: 1,
@@ -31,7 +31,7 @@ const VariantContainer = ({ control }: any) => {
       {fields.map(({ id }, index) => (
         <ProductVariants
           key={id}
-          control={control}
+          form={form}
           index={index}
           remove={remove}
           variants={fields.length}

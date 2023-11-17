@@ -10,15 +10,14 @@ import { Input } from '@/components/ui/input'
 import ProductSizes from './product-sizes'
 import ProductDelete from './product-delete'
 import { minVariables } from '@/constants/products'
-import { type Control } from 'react-hook-form'
 
 const ProductVariants = ({
-  control,
+  form,
   remove,
   index,
   variants,
 }: {
-  control: Control
+  form: any
   remove: (index: number) => void
   index: number
   variants: number
@@ -27,7 +26,7 @@ const ProductVariants = ({
     <section className='border border-border p-6 rounded-md space-y-6 w-full'>
       <header className='flex justify-between items-center'>
         <FormField
-          control={control}
+          control={form.control}
           defaultValue={true}
           name={`variants.${index}.in_stock`}
           render={({ field }) => (
@@ -48,9 +47,9 @@ const ProductVariants = ({
         )}
       </header>
       <main className='flex gap-5 justify-start items-start'>
-        <ProductSizes control={control} index={index} />
+        <ProductSizes form={form} index={index} />
         <FormField
-          control={control}
+          control={form.control}
           name={`variants.${index}.price_size`}
           render={({ field }) => (
             <FormItem className='flex-1'>
@@ -71,7 +70,7 @@ const ProductVariants = ({
       <h2 className='sub-title-product'>Optional</h2>
       <div className='flex items-center gap-5'>
         <FormField
-          control={control}
+          control={form.control}
           name={`variants.${index}.available_quantity`}
           render={({ field }) => (
             <FormItem className='flex-1'>
@@ -89,7 +88,7 @@ const ProductVariants = ({
         />
 
         <FormField
-          control={control}
+          control={form.control}
           name={`variants.${index}.price_offer`}
           render={({ field }) => (
             <FormItem className='flex-1'>

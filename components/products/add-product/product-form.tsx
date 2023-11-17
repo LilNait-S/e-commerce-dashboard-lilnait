@@ -178,7 +178,7 @@ const ProductForm = ({ type, product }: Props) => {
             <ProductCategory control={form.control} />
           </section>
 
-          <VariantContainer control={form.control} />
+          <VariantContainer form={form} />
         </div>
       </form>
     </Form>
