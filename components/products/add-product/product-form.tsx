@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 import { productSchema } from '@/lib/validations/product'
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
-import { type ProductValue } from '../types'
+import { type ProductColumns } from '../types'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -31,7 +31,7 @@ import { textToSlug } from '@/lib/common/utils'
 
 interface Props {
   type: string
-  product?: ProductValue
+  product?: ProductColumns
 }
 
 const ProductForm = ({ type, product }: Props) => {
@@ -47,7 +47,6 @@ const ProductForm = ({ type, product }: Props) => {
       description: product?.description ?? '',
       images: product?.images ?? [],
       categorys_id: product?.categorys_id ?? '1',
-
       variants: [
         {
           in_stock: true,
@@ -64,15 +63,14 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
-        console.log('values', values)
-        // await createProduct({
-        //   values,
-        // })
-        // router.push('/products/product-list')
+        await createProduct({
+          values,
+        })
+        router.push('/products/product-list')
       }
       if (type === 'edit') {
-        // await updateProduct({ values, productId: product?.id as string })
-        // router.push('/products/product-list')
+        await updateProduct({ values, productId: product?.id as string })
+        router.push('/products/product-list')
       }
     } catch (e) {
       console.error(e)
@@ -97,7 +95,11 @@ const ProductForm = ({ type, product }: Props) => {
             {type === 'create' ? 'Add a new Product' : 'Edit Product'}
           </h1>
           <div className='space-x-3'>
-            <Button type='submit'>
+            <Button
+              type='submit'
+              disabled={isSubmitting}
+              className={`${isSubmitting ? 'cursor-not-allowed' : ''}`}
+            >
               {isSubmitting
                 ? `${type === 'create' ? 'Publishing' : 'Editing'}`
                 : `${type === 'create' ? 'Publish' : 'Edit'}`}

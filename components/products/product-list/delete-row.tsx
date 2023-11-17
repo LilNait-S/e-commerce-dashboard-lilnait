@@ -10,8 +10,8 @@ interface Props {
 }
 const DeleteRow = ({ id, imgsData }: Props) => {
   const router = useRouter()
-  const handleDelete = () => {
-    deleteProduct({ id, imgsData })
+  const handleDelete = async () => {
+    await deleteProduct({ id, imgsData })
     router.refresh()
   }
   return (

@@ -6,7 +6,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { errorNotify } from '@/lib/common/notifys'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { SortableLayer } from './sortable-layer'
 import { SortableItem } from './sortable-item'
 import { MAX_FILE_SIZE } from '@/constants/products'
