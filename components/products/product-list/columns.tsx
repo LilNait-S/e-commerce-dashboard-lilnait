@@ -16,14 +16,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { type ProductDetails } from '@/components/products/types'
+import { type ProductColumns } from '@/components/products/types'
 import { DataTableColumnHeader } from '@/components/products/product-list/datatable-column-header'
 import Link from 'next/link'
 import DeleteRow from './delete-row'
 import { Label } from '@radix-ui/react-label'
 import { sizesVariant } from '@/constants/products'
 
-export const columns: ColumnDef<ProductDetails>[] = [
+export const columns: ColumnDef<ProductColumns>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -81,8 +81,8 @@ export const columns: ColumnDef<ProductDetails>[] = [
   //   },
   // },
   {
-    accessorKey: 'variants',
-    header: 'Variants',
+    accessorKey: 'Sizes',
+    header: 'Sizes',
     cell: ({ row }) => {
       const product = row.original
 
@@ -115,7 +115,7 @@ export const columns: ColumnDef<ProductDetails>[] = [
           {product.images?.slice(0, 3).map((image, i) => (
             <img
               key={i}
-              src={image as string}
+              src={image}
               className='rounded-full'
               width={25}
               height={25}

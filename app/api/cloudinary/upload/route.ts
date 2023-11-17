@@ -7,9 +7,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 })
 
-export async function POST(request: Request) {
-  const formData = await request.formData()
-  const paths = formData.getAll('paths')
+export async function POST(req: Request) {
+  const paths = await req.json()
 
   if (!paths) {
     return NextResponse.json(
@@ -29,9 +28,11 @@ export async function POST(request: Request) {
     const DataOfImages = []
 
     for (const path of paths) {
-      const result = await cloudinary.uploader.upload(path as string, options)
+      const result = await cloudinary.uploader.upload(path, options)
       DataOfImages.push(result)
     }
+
+    console.log('DataOfImages', DataOfImages)
 
     const urlImages = DataOfImages.map((item) => item.url)
 

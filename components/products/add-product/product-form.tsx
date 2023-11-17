@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 import { productSchema } from '@/lib/validations/product'
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
-import { type ProductDetails } from '../types'
+import { type ProductValue } from '../types'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -31,7 +31,7 @@ import { textToSlug } from '@/lib/common/utils'
 
 interface Props {
   type: string
-  product?: ProductDetails
+  product?: ProductValue
 }
 
 const ProductForm = ({ type, product }: Props) => {
@@ -64,14 +64,15 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
+        console.log('values', values)
         await createProduct({
           values,
         })
         router.push('/products/product-list')
       }
       if (type === 'edit') {
-        await updateProduct({ values, productId: product?.id as string })
-        router.push('/products/product-list')
+        // await updateProduct({ values, productId: product?.id as string })
+        // router.push('/products/product-list')
       }
     } catch (e) {
       console.error(e)

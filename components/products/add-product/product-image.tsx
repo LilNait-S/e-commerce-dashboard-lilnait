@@ -6,33 +6,27 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { errorNotify } from '@/lib/common/notifys'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { SortableLayer } from './sortable-layer'
 import { SortableItem } from './sortable-item'
 import { MAX_FILE_SIZE } from '@/constants/products'
-
-interface FileObject {
-  id: number
-  preview: string
-  name: string
-}
+import { type FileObjectImage } from '../types'
 
 const ProductImage = ({ control }: any) => {
-  const [imagePreviews, setImagePreviews] = useState<FileObject[]>([])
+  const [imagePreviews, setImagePreviews] = useState<FileObjectImage[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleChangeImages = (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: File[]) => void
+    fieldChange: (value: string[]) => void
   ) => {
     e.preventDefault()
+
     const files = e.target.files
 
     if (!files || files.length === 0) return
-    if (e.target.files === null) return
-    
 
-    const imagePromises = []
-    const urlImages: string[] = []
+    const imagePromises: Promise<FileObjectImage>[] = []
     let id = 1
 
     for (let i = 0; i < files.length; i++) {
@@ -46,29 +40,28 @@ const ProductImage = ({ control }: any) => {
 
       if (file.size > MAX_FILE_SIZE) {
         errorNotify({
-          message: `The image ${file.name} is too large. Maximum 5MB allowed.`,
+          message: `The image ${file.name} is too large. Maximum 2MB allowed.`,
         })
         continue
       }
 
-      const fileReader = new FileReader()
-
-      const imagePromise = new Promise((resolve) => {
+      const imagePromise = new Promise<FileObjectImage>((resolve) => {
+        const fileReader = new FileReader()
         fileReader.onload = () => {
           const result = fileReader.result as string
           resolve({ id: id++, name: file.name, preview: result })
-          urlImages.push(result)
         }
+        fileReader.readAsDataURL(file)
       })
 
-      fileReader.readAsDataURL(file)
       imagePromises.push(imagePromise)
     }
 
     Promise.all(imagePromises)
       .then((results) => {
-        setImagePreviews(results as FileObject[])
-        fieldChange(results as any[])
+        const pathBS64 = results.map((path) => path.preview)
+        setImagePreviews(results)
+        fieldChange(pathBS64)
       })
       .catch((err) => {
         console.error(err)
@@ -120,6 +113,7 @@ const ProductImage = ({ control }: any) => {
               </div>
               <FormControl>
                 <input
+                  ref={fileInputRef}
                   id='dropzone-file'
                   type='file'
                   accept='image/jpg, image/jpeg, image/png, image/avif, image/webp'
@@ -154,7 +148,9 @@ const ProductImage = ({ control }: any) => {
                         className='w-8 h-8 object-cover ml-2'
                       />
                       <span className='text-xs ml-2 whitespace-nowrap overflow-hidden text-ellipsis'>
-                        {file.name}
+                        {file.name.length > 20
+                          ? `${file.name.substring(0, 20)}...`
+                          : file.name}
                         {i === 0 ? '(main image)' : null}
                       </span>
                     </SortableItem>

@@ -1,22 +1,19 @@
 import { supabase } from '@/lib/supabase'
 import { errorNotify, successNotify } from '../common/notifys'
-import {
-  type SupabaseClient,
-  type PostgrestResponse,
-} from '@supabase/supabase-js'
-import { type ProductForm } from '@/components/products/types'
+import { type PostgrestResponse } from '@supabase/supabase-js'
+import { type ProductValue } from '@/components/products/types'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 interface Params {
-  values: ProductForm
+  values: ProductValue
 }
 
 const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_SERVER_URL
   : 'http://localhost:3000'
 
-export const fetchProducts = async ({ supabaseServer }: any) => {
+export const fetchProducts = async () => {
   const { data: products, error: productsError }: PostgrestResponse<any> =
     await supabase.from('products').select('*')
 
@@ -25,7 +22,7 @@ export const fetchProducts = async ({ supabaseServer }: any) => {
   }
 
   const { data: variants, error: variantsError }: PostgrestResponse<any> =
-    await supabaseServer.from('variants').select('*')
+    await supabase.from('variants').select('*')
 
   if (variantsError) {
     throw new Error(variantsError.message)
@@ -43,14 +40,8 @@ export const fetchProducts = async ({ supabaseServer }: any) => {
   return { products: combinedData }
 }
 
-export const getProductDetails = async ({
-  id,
-  supabaseServer,
-}: {
-  id: string
-  supabaseServer: SupabaseClient<any, 'public', any>
-}) => {
-  const { data: products, error } = await supabaseServer
+export const getProductDetails = async ({ id }: { id: string }) => {
+  const { data: products, error } = await supabase
     .from('products')
     .select('*')
     .eq('id', id)
@@ -67,16 +58,14 @@ export const getProductDetails = async ({
   return { product }
 }
 
-export const uploadImage = async (imagePath: any[]) => {
+export const uploadImage = async (imagePath: string[]) => {
   try {
-    const formData = new FormData()
-    for (let i = 0; i < imagePath.length; i++) {
-      formData.append('paths', imagePath[i].preview)
-    }
-
-    const response = await fetch(`${serverUrl}/api/upload`, {
+    const response = await fetch(`${serverUrl}/api/cloudinary/upload`, {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(imagePath),
     })
 
     return await response.json()
@@ -177,7 +166,7 @@ export const updateProduct = async ({
   values,
   productId,
 }: {
-  values: ProductForm
+  values: ProductValue
   productId: string
 }) => {
   try {
