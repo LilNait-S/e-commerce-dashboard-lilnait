@@ -17,7 +17,6 @@ export async function DELETE(req: Request) {
   try {
     for (const publicId of publicIds) {
       await cloudinary.uploader.destroy(publicId, { invalidate: true })
-      console.log(`image with public id: '${publicId}' deleted successfully`)
     }
 
     const responseMessage =

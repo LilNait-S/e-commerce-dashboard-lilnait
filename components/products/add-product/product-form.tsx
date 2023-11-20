@@ -63,14 +63,16 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
-        await createProduct({
-          values,
-        })
-        router.push('/products/product-list')
+        console.log('values create->', values)
+        // await createProduct({
+        //   values,
+        // })
+        // router.push('/products/product-list')
       }
       if (type === 'edit') {
-        await updateProduct({ values, productId: product?.id as string })
-        router.push('/products/product-list')
+        console.log('values edit->', values)
+        // await updateProduct({ values, productId: product?.id as string })
+        // router.push('/products/product-list')
       }
     } catch (e) {
       console.error(e)

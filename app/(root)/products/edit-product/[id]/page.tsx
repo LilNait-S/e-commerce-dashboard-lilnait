@@ -4,8 +4,6 @@ import { getProductDetails } from '@/lib/actions/product.actions'
 const page = async ({ params: { id } }: { params: { id: string } }) => {
   const { product } = await getProductDetails({ id })
 
-  console.log('productproduct', product)
-
   return <ProductForm type='edit' product={product} />
 }
 

@@ -182,7 +182,7 @@ export const createProduct = async ({ values }: Params) => {
   }
 }
 
-export const deleteImage = async (publicIds: string[]) => {
+export const deleteImages = async (publicIds: string[]) => {
   try {
     const response = await fetch(`${serverUrl}/api/cloudinary/delete`, {
       method: 'DELETE',
@@ -198,6 +198,7 @@ export const deleteImage = async (publicIds: string[]) => {
     throw new Error('Error on uploadImage')
   }
 }
+
 export const deleteProduct = async ({
   id,
   imgsData,
@@ -212,7 +213,7 @@ export const deleteProduct = async ({
     if (user === null) return
 
     const publicIds = imgsData.map((id) => id.public_id)
-    const { error: ErrorCloudinary } = await deleteImage(publicIds)
+    const { error: ErrorCloudinary } = await deleteImages(publicIds)
     if (ErrorCloudinary) {
       return errorNotify({ message: ErrorCloudinary?.message })
     }
@@ -244,7 +245,7 @@ export const deleteProducts = async ({
     } = await supabase.auth.getUser()
     if (user === null) return
 
-    const { error: ErrorCloudinary } = await deleteImage(publicIds)
+    const { error: ErrorCloudinary } = await deleteImages(publicIds)
     if (ErrorCloudinary) {
       return errorNotify({ message: ErrorCloudinary?.message })
     }

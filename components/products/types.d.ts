@@ -30,7 +30,7 @@ export interface ProductValue {
   slug: string
   referential_code?: string | null
   description: string
-  images: string[]
+  images: imagesDB[]
   categorys_id: string
   variants: variants[]
 }

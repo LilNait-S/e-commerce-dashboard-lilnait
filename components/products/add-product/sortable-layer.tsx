@@ -37,14 +37,21 @@ export function SortableLayer({
 
     if (active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const oldIndex = items.findIndex((item) => item.id === active?.id)
         const newIndex = items.findIndex((item) => item.id === over?.id)
 
         form.setValue(
           'images',
-          arrayMove(items, oldIndex, newIndex).map((entry) => entry.preview)
+          arrayMove(items, oldIndex, newIndex).map((imageData, index) => ({
+            ...imageData,
+            order: index + 1,
+          }))
         )
-        return arrayMove(items, oldIndex, newIndex)
+
+        return arrayMove(items, oldIndex, newIndex).map((imageData, index) => ({
+          ...imageData,
+          order: index + 1,
+        }))
       })
     }
   }

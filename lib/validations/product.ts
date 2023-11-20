@@ -1,4 +1,3 @@
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants/products'
 import * as z from 'zod'
 
 const variableSchema = z.object({
