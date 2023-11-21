@@ -6,7 +6,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { errorNotify } from '@/lib/common/notifys'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type imagesDB } from '../types'
 import { Input } from '@/components/ui/input'
 import ProductSortable from './product-sortable'
@@ -104,24 +104,32 @@ const ProductImage = ({ form }: any) => {
     }
   }
 
-  const remoteAllImages = async (public_ids: string[]) => {
+  const removeAllImages = async (public_ids: string[]) => {
     try {
       setIsLoading(true)
       setLoadingProgress(20)
       await deleteImages(public_ids)
       form.setValue('images', [])
       setImagePreviews([])
+      setLoadingProgress(100)
     } catch (e) {
       console.error(e)
     } finally {
       setIsLoading(false)
-      setLoadingProgress(100)
     }
   }
 
   const images = form.watch('images')
-  console.log('images', images)
-  console.log(`imagePreviews`, imagePreviews)
+
+  const getImagesData = () => {
+    setImagePreviews(images)
+  }
+
+  useEffect(() => {
+    getImagesData()
+  }, [])
+
+  console.log('images->', images)
 
   return (
     <FormField
@@ -172,7 +180,7 @@ const ProductImage = ({ form }: any) => {
                 variant='outline'
                 className='border-destructive text-destructive hover:text-destructive dark:hover:bg-neutral-900 flex-1'
                 onClick={() => {
-                  remoteAllImages(imagePreviews.map((img) => img.public_id))
+                  removeAllImages(imagePreviews.map((img) => img.public_id))
                 }}
               >
                 Delete all images

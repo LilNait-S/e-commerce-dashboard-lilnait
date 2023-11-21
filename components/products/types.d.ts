@@ -11,8 +11,18 @@ export interface ProductColumns {
   variants: variants[]
 }
 
+export interface ProductValue {
+  name: string
+  slug: string
+  referential_code?: string | null
+  description: string
+  images: imagesDB[]
+  categorys_id: string
+  variants: variants[]
+}
+
 export interface imagesDB {
-  id: number
+  id?: number
   created_at: Date
   asset_id: string
   public_id: string
@@ -23,16 +33,7 @@ export interface imagesDB {
   secure_url: string
   folder: string
   product_id: string
-}
-
-export interface ProductValue {
-  name: string
-  slug: string
-  referential_code?: string | null
-  description: string
-  images: imagesDB[]
-  categorys_id: string
-  variants: variants[]
+  order: number
 }
 
 export interface variants {

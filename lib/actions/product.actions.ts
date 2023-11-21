@@ -117,7 +117,7 @@ export const createProduct = async ({ values }: Params) => {
       return errorNotify({ message: 'Needs a user id' })
     }
 
-    const newContent = {
+    const productContent = {
       user_id: user.id,
       name: values.name,
       slug: values.slug,
@@ -128,35 +128,21 @@ export const createProduct = async ({ values }: Params) => {
 
     const { data: products, error: productsError } = await supabase
       .from('products')
-      .insert([newContent])
+      .insert([productContent])
       .select()
 
     if (productsError != null) {
       return errorNotify({ message: productsError?.message })
     }
 
-    const dataImages = await uploadImage(values.images)
-
-    if (!dataImages) {
-      return errorNotify({ message: 'image upload error' })
-    }
-
-    const newImages = dataImages.map((data: imagesDB) => ({
-      created_at: data.created_at,
-      asset_id: data.asset_id,
-      public_id: data.public_id,
-      format: data.format,
-      tags: data.tags,
-      type: data.type,
-      url: data.url,
-      secure_url: data.secure_url,
-      folder: data.folder,
+    const dataImages = values.images.map(({ id, ...rest }) => ({
+      ...rest,
       product_id: products[0].id,
     }))
 
     const { error: imagesError } = await supabase
       .from('images')
-      .insert(newImages)
+      .insert(dataImages)
 
     if (imagesError) {
       console.error('Error inserting images into the database', imagesError)
@@ -194,8 +180,8 @@ export const deleteImages = async (publicIds: string[]) => {
 
     return await response.json()
   } catch (e) {
-    console.error('Error on uploadImage:', e)
-    throw new Error('Error on uploadImage')
+    console.error('Error on delete images:', e)
+    throw new Error('Error on delete images')
   }
 }
 
@@ -269,16 +255,46 @@ export const updateProduct = async ({
     const {
       data: { user },
     } = await supabase.auth.getUser()
-    if (user === null) return
 
-    const content = { ...values, user_id: user.id }
+    if (user === null) {
+      return errorNotify({ message: 'Needs a user id' })
+    }
 
-    const { error } = await supabase
+    const productContent = {
+      user_id: user.id,
+      name: values.name,
+      slug: values.slug,
+      referential_code: values.referential_code,
+      description: values.description,
+      categorys_id: +values.categorys_id,
+    }
+
+    const { data: products, error: productsError } = await supabase
       .from('products')
-      .update(content)
+      .update(productContent)
       .eq('id', productId)
+      .select()
 
-    if (error != null) return errorNotify({ message: error?.message })
+    if (productsError != null) {
+      return errorNotify({ message: productsError?.message })
+    }
+
+    const dataImages = values.images.map(({ id, ...rest }) => rest)
+
+    const { error: imagesError } = await supabase
+      .from('images')
+      .insert(dataImages)
+
+    if (imagesError) {
+      console.error('Error inserting images into the database', imagesError)
+    }
+
+    const modifiedVariables = values.variants.map((object) => ({
+      ...object,
+      sizes_id: +object.sizes_id,
+      product_id: products[0].id,
+    }))
+
     successNotify({ message: 'Success when editing the product' })
   } catch (error: any) {
     throw new Error(`Failed to editing product: ${error.message}`)
