@@ -140,7 +140,12 @@ const ProductImage = ({ form }: any) => {
   const images = form.watch('images')
 
   const getImagesData = () => {
-    setImagePreviews(images)
+    setImagePreviews(
+      images.map((data: imagesDB, index: number) => ({
+        ...data,
+        id_local: index + 1,
+      }))
+    )
   }
 
   useEffect(() => {
