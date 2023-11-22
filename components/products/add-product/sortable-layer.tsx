@@ -32,13 +32,33 @@ export function SortableLayer({
   setItems: Dispatch<SetStateAction<any[]>>
   form: any
 }) {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+        {children}
+      </SortableContext>
+    </DndContext>
+  )
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
 
     if (active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active?.id)
-        const newIndex = items.findIndex((item) => item.id === over?.id)
+        const oldIndex = items.findIndex((item) => item.id_local === active?.id)
+        const newIndex = items.findIndex((item) => item.id_local === over?.id)
 
         form.setValue(
           'images',
@@ -55,24 +75,4 @@ export function SortableLayer({
       })
     }
   }
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
-
-  return (
-    <DndContext
-      sensors={sensors}
-      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {children}
-      </SortableContext>
-    </DndContext>
-  )
 }

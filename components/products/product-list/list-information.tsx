@@ -4,12 +4,8 @@ import { fetchProducts } from '@/lib/actions/product.actions'
 
 const ListInformation = async () => {
   const { products } = await fetchProducts()
-  
-  return (
-    <div>
-      <DataTable columns={columns} data={products} />
-    </div>
-  )
+
+  return <DataTable columns={columns} data={products} />
 }
 
 export default ListInformation

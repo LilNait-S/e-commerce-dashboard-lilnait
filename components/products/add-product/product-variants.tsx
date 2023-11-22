@@ -18,7 +18,7 @@ const ProductVariants = ({
   variants,
 }: {
   form: any
-  remove: (index: number) => void
+  remove: (index: number, idVariant?: string) => void
   index: number
   variants: number
 }) => {

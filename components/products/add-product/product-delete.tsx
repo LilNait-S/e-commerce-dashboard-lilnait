@@ -4,9 +4,11 @@ import { TrashIcon } from '@radix-ui/react-icons'
 const ProductDelete = ({
   remove,
   index,
+ 
 }: {
   index: number
-  remove: (index: number) => void
+  remove: (index: number, idVariant?: string) => void
+
 }) => {
   return (
     <Button

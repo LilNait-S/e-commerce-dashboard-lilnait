@@ -34,9 +34,11 @@ export interface imagesDB {
   folder: string
   product_id: string
   order: number
+  id_local?: number
 }
 
 export interface variants {
+  id?: string
   in_stock: boolean
   sizes_id: string
   price_size: number

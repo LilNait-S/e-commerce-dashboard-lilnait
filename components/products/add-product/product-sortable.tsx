@@ -11,7 +11,7 @@ const ProductSortable = ({
   form: any
   imagePreviews: any[]
   setImagePreviews: Dispatch<SetStateAction<any[]>>
-  handleRemoveImage: (imageName: string) => void
+  handleRemoveImage: (public_id: string, idDB?: number) => void
 }) => {
   return (
     <div className='flex flex-col gap-y-3'>
@@ -23,9 +23,10 @@ const ProductSortable = ({
         {imagePreviews.map((file, i) => {
           return (
             <SortableItem
-              itemsLength={imagePreviews.length}
-              key={file.id}
               id={file.id}
+              itemsLength={imagePreviews.length}
+              key={file.public_id}
+              id_local={file.id_local}
               name={file.public_id}
               className={
                 'text-md group flex items-center justify-between rounded-md bg-neutral-100 px-3 py-2 font-mono dark:bg-neutral-900'

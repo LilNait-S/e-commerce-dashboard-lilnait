@@ -10,7 +10,11 @@ import { useEffect, useState } from 'react'
 import { type imagesDB } from '../types'
 import { Input } from '@/components/ui/input'
 import ProductSortable from './product-sortable'
-import { deleteImages, uploadImage } from '@/lib/actions/product.actions'
+import {
+  deleteImagesCloudinary,
+  deleteImagesDB,
+  uploadImage,
+} from '@/lib/actions/product.actions'
 import { processImage } from '@/lib/common/utils'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -57,7 +61,7 @@ const ProductImage = ({ form }: any) => {
       }
 
       const newImages = dataImages.map((data: imagesDB, index: number) => ({
-        id: imagePreviews.length + index + 1,
+        id_local: imagePreviews.length + index + 1,
         created_at: data.created_at,
         asset_id: data.asset_id,
         public_id: data.public_id,
@@ -83,12 +87,17 @@ const ProductImage = ({ form }: any) => {
     }
   }
 
-  const handleRemoveImage = async (public_id: string) => {
+  const handleRemoveImage = async (public_id: string, idDB?: number) => {
     try {
       const updatedPreviews = imagePreviews.filter(
         (item) => item.public_id !== public_id
       )
-      await deleteImages([public_id])
+
+      if (idDB) {
+        await deleteImagesDB([idDB])
+      }
+
+      await deleteImagesCloudinary([public_id])
 
       form.setValue(
         'images',
@@ -104,11 +113,20 @@ const ProductImage = ({ form }: any) => {
     }
   }
 
-  const removeAllImages = async (public_ids: string[]) => {
+  const removeAllImages = async () => {
+    const public_ids: string[] = imagePreviews.map((img) => img.public_id)
+    const idsDB = imagePreviews
+      .filter((img) => img.id !== undefined && img.id !== null)
+      .map((img) => img.id as number)
+
     try {
       setIsLoading(true)
       setLoadingProgress(20)
-      await deleteImages(public_ids)
+      if (idsDB) {
+        await deleteImagesDB(idsDB)
+      }
+      setLoadingProgress(60)
+      await deleteImagesCloudinary(public_ids)
       form.setValue('images', [])
       setImagePreviews([])
       setLoadingProgress(100)
@@ -128,8 +146,6 @@ const ProductImage = ({ form }: any) => {
   useEffect(() => {
     getImagesData()
   }, [])
-
-  console.log('images->', images)
 
   return (
     <FormField
@@ -179,9 +195,7 @@ const ProductImage = ({ form }: any) => {
                 type='button'
                 variant='outline'
                 className='border-destructive text-destructive hover:text-destructive dark:hover:bg-neutral-900 flex-1'
-                onClick={() => {
-                  removeAllImages(imagePreviews.map((img) => img.public_id))
-                }}
+                onClick={removeAllImages}
               >
                 Delete all images
               </Button>

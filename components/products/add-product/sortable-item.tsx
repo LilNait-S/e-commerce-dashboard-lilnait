@@ -11,6 +11,7 @@ import { GripVertical, X } from 'lucide-react'
 
 export function SortableItem({
   id,
+  id_local,
   children,
   name,
   onRemove,
@@ -19,11 +20,12 @@ export function SortableItem({
   itemsLength,
   ...props
 }: {
-  id: string | number
+  id: number
+  id_local: number
   children: ReactNode
   name: string
   className?: string
-  onRemove?: (id: string) => void
+  onRemove?: (id_local: string, id: number) => void
   dragOverlay?: boolean
   asChild?: boolean
   itemsLength: number
@@ -37,7 +39,7 @@ export function SortableItem({
     transform,
     transition,
     setActivatorNodeRef,
-  } = useSortable({ id })
+  } = useSortable({ id: id_local })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -75,7 +77,7 @@ export function SortableItem({
             size='icon'
             variant='ghost'
             onClick={() => {
-              onRemove(name)
+              onRemove(name, id)
             }}
             className={cn(
               isSorting

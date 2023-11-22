@@ -63,15 +63,32 @@ const ProductForm = ({ type, product }: Props) => {
     setIsSubmitting(true)
     try {
       if (type === 'create') {
-        console.log('values create->', values)
         await createProduct({
           values,
         })
         router.push('/products/product-list')
       }
       if (type === 'edit') {
-        console.log('values edit->', values)
-        await updateProduct({ values, productId: product?.id as string })
+        const variantsNotInDB = values.variants.filter(({ id }) => !id)
+        const variantsInDB = values.variants.filter(({ id }) => id)
+        const deletedIds = (product?.variants
+          .filter(
+            (originalItem) =>
+              !values.variants.some(
+                (modifiedItem) => modifiedItem.id === originalItem.id
+              )
+          )
+          .map((deletedItem) => deletedItem.id) ?? []) as string[]
+
+   
+
+        await updateProduct({
+          values,
+          productId: product?.id as string,
+          deletedIds,
+          variantsNotInDB,
+          variantsInDB,
+        })
         router.push('/products/product-list')
       }
     } catch (e) {

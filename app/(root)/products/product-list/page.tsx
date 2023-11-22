@@ -1,5 +1,7 @@
 import ListInformation from '@/components/products/product-list/list-information'
 
+export const dynamic = 'force-dynamic'
+
 const Page = () => {
   return (
     <section>

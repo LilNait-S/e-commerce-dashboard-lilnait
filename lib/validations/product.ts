@@ -1,6 +1,7 @@
 import * as z from 'zod'
 
 const variableSchema = z.object({
+  id: z.string().optional(),
   in_stock: z.boolean(),
   sizes_id: z.string().nonempty({
     message: 'Description is required',
