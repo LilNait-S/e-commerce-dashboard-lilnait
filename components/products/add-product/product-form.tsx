@@ -95,6 +95,7 @@ const ProductForm = ({ type, product }: Props) => {
       console.error(e)
     } finally {
       setIsSubmitting(false)
+      
     }
 
     router.refresh()

@@ -7,11 +7,13 @@ const ProductSortable = ({
   imagePreviews,
   setImagePreviews,
   handleRemoveImage,
+  loadingRowId,
 }: {
   form: any
   imagePreviews: any[]
   setImagePreviews: Dispatch<SetStateAction<any[]>>
   handleRemoveImage: (public_id: string, idDB?: number) => void
+  loadingRowId: string | null
 }) => {
   return (
     <div className='flex flex-col gap-y-3'>
@@ -33,16 +35,22 @@ const ProductSortable = ({
               }
               onRemove={handleRemoveImage}
             >
-              <img
-                src={file.secure_url}
-                className='w-8 h-8 object-cover ml-2'
-              />
-              <span className='text-xs ml-2 whitespace-nowrap overflow-hidden text-ellipsis'>
-                {file.public_id.length > 20
-                  ? `${file.public_id.substring(0, 20)}...`
-                  : file.public_id}
-                {i === 0 ? '(main image)' : null}
-              </span>
+              {loadingRowId === file.public_id ? (
+                'Deleting...'
+              ) : (
+                <>
+                  <img
+                    src={file.secure_url}
+                    className='w-8 h-8 object-cover ml-2'
+                  />
+                  <span className='text-xs ml-2 whitespace-nowrap overflow-hidden text-ellipsis'>
+                    {file.public_id.length > 20
+                      ? `${file.public_id.substring(0, 20)}...`
+                      : file.public_id}
+                    {i === 0 ? '(main image)' : null}
+                  </span>
+                </>
+              )}
             </SortableItem>
           )
         })}

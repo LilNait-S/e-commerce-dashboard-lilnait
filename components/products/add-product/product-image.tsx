@@ -23,6 +23,7 @@ const ProductImage = ({ form }: any) => {
   const [imagePreviews, setImagePreviews] = useState<imagesDB[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [loadingProgress, setLoadingProgress] = useState(0)
+  const [loadingRowId, setLoadingRowId] = useState<string | null>(null)
 
   const handleChangeImages = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -89,6 +90,7 @@ const ProductImage = ({ form }: any) => {
 
   const handleRemoveImage = async (public_id: string, idDB?: number) => {
     try {
+      setLoadingRowId(public_id)
       const updatedPreviews = imagePreviews.filter(
         (item) => item.public_id !== public_id
       )
@@ -110,6 +112,8 @@ const ProductImage = ({ form }: any) => {
       setImagePreviews(updatedPreviews)
     } catch (e) {
       console.error(e)
+    } finally {
+      setLoadingRowId(null)
     }
   }
 
@@ -220,6 +224,7 @@ const ProductImage = ({ form }: any) => {
               imagePreviews={imagePreviews}
               setImagePreviews={setImagePreviews}
               handleRemoveImage={handleRemoveImage}
+              loadingRowId={loadingRowId}
             />
           )}
         </FormItem>
